@@ -44,6 +44,8 @@ identitas, jadwal kereta (, no. kursi?)
 # Seberapa jauh fungsionalitasnya 🗿?
 ### File handling kereta
 
-Ini seberapa kompleks? apkh harus ada sampai opsi kursi dan ada validasi ketika kursi sudah dipesan maka tidak bisa diorder oleh orang lain? (artinya ada counter kapasitas juga)
+Ini seberapa kompleks? apkh harus ada sampai opsi kursi dan ada validasi ketika kursi sudah dipesan maka tidak bisa diorder oleh orang lain? (artinya ada counter kapasitas juga) 
+kalo bisa ya opsi pilihan kursi dan kalo kursi dah ada yang milih ya nggaj bisa di order
 
 seberapa banyak destinasinya? kalo ini semakin banyak jadi data yang harus input dan simpan jadi banyak juga.
+sejatim? atau ambil aja beberapa kota jatim sama beberapa stasiunnya
