@@ -5,6 +5,7 @@
 * password 
 * (optional) no telp for forgor password auth
 * (optional) email?
+* NIK?
 
 ## Log in
 * username (/email?)
