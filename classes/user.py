@@ -59,3 +59,5 @@ class User:
 		self.nik = None
 		self.nama = None
 		self.role = None
+		self.status = False
+		self.status_reg = False
