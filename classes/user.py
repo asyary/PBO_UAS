@@ -2,17 +2,18 @@ from utils import model as DbModel
 
 class User:
 	def __init__(self, email, password, nik = None, nama = None):
-		self.status = None
+		self.status = False
+		self.status_reg = False
 		self.db = DbModel.DbModel()
 		self.email = email
 		self.password = password
 		if nik is not None and nama is not None:
 			self.nik = nik
 			self.nama = nama
-			self.status = self.register()
+			self.status_reg = self.register()
 		else:
 			user_data = self.login()
-			if user_data:
+			if self.status:
 				self.id = user_data.get('id')
 				self.nik = user_data.get('nik')
 				self.nama = user_data.get('nama')
@@ -27,6 +28,10 @@ class User:
 		self.db.cursor.execute(query, (self.email, self.password))
 		row = self.db.cursor.fetchone()
 		result = dict(row) if row else None
+		if result is not None:
+			self.status = True
+		else:
+			self.status = False
 		self.db.close()
 		return result
 	
