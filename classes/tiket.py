@@ -32,12 +32,6 @@ def JadwalKereta(tiket):
    else:
        print("Nomor jadwal tidak valid. Silakan pilih antara 1-5.")
 
-# Membuat objek Tiket dengan data yang diberikan
-tiket_kereta = Tiket("Wlingi", "Wonokromo", penumpang=1, jadwal=None)
-
-# Menjalankan fungsi JadwalKereta dengan objek tiket_kereta
-JadwalKereta(tiket_kereta)
-
 #gambaran kursi di kereta
 def Kursi():
    daftar_kursi = []
@@ -46,3 +40,10 @@ def Kursi():
    for number in range(1, 25):  # Dari 1 hingga 24
     for letter in alphabet:  # Untuk setiap huruf A sampai E
         daftar_kursi.append(f"{number}{letter}")  # Menggabungkan angka dan huruf
+
+
+# # Membuat objek Tiket dengan data yang diberikan
+# tiket_kereta = Tiket("Wlingi", "Wonokromo", penumpang=1, jadwal=None)
+
+# # Menjalankan fungsi JadwalKereta dengan objek tiket_kereta
+# JadwalKereta(tiket_kereta)

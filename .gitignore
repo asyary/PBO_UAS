@@ -1,2 +1,9 @@
-/notes
-/utils/__pycache__
+#notes
+notes/noidea.md
+
+#test files
+/test
+
+#chace
+classes/__pycache__
+utils/__pycache__
