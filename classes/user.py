@@ -1,13 +1,16 @@
 from utils import model as DbModel
 
 class User:
-	def __init__(self, email, password, register = False):
+	def __init__(self, email, password, nik = None, nama = None):
+		self.status = None
 		self.db = DbModel.DbModel()
-		if register:
-			self.register()
+		self.email = email
+		self.password = password
+		if nik is not None and nama is not None:
+			self.nik = nik
+			self.nama = nama
+			self.status = self.register()
 		else:
-			self.email = email
-			self.password = password
 			user_data = self.login()
 			if user_data:
 				self.id = user_data.get('id')
@@ -15,12 +18,8 @@ class User:
 				self.nama = user_data.get('nama')
 				self.role = user_data.get('role')
 			else:
-				self.id = None
-				self.nik = None
-				self.nama = None
-				self.email = None
-				self.password = None
-				self.role = None
+				self.clear()
+				return None
             
 	def login(self):
 		self.db.connect()
@@ -32,8 +31,26 @@ class User:
 		return result
 	
 	def register(self):
-		pass
-        
-class Admin (User):
-    def __init__(self, id_user, nik, nama, email, role='admin'):
-        super().__init__(id_user, nik, nama, email, role)
+		self.db.connect()
+		query = "INSERT INTO user (email, password, nik, nama) VALUES (?, ?, ?, ?)"
+		try:
+			self.db.cursor.execute(query, (self.email, self.password, self.nik, self.nama))
+			self.db.connection.commit()
+			success = True
+		except Exception:
+			success = False
+		finally:
+			self.db.close()
+			self.clear()
+		return success
+
+	def logout(self):
+		self.clear()
+
+	def clear(self):
+		self.id = None
+		self.email = None
+		self.password = None
+		self.nik = None
+		self.nama = None
+		self.role = None
