@@ -5,6 +5,8 @@ class Pesan:
        self.stasiun_Tujuan = stasiun_Tujuan
        self.penumpang = penumpang
        self.jadwal = jadwal
+    
+    
 
 class Tiket(Pesan):
    def __init__(self, stasiun_Awal, stasiun_Tujuan, penumpang, jadwal):
