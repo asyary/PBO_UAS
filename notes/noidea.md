@@ -58,7 +58,7 @@ sejatim? atau ambil aja beberapa kota jatim sama beberapa stasiunnya
 1. **Tiket Pemesanan**
    - Pilih stasiun **berangkat**
    - Pilih stasiun **tujuan**
-   - Cari stasiun tujuan. Jika ditemukan, lanjutkan ke langkah berikutnya.
+   - Cari stasiun berangkat dan tujuan. Jika ditemukan, lanjutkan ke langkah berikutnya.
    
 2. **Pilih Hari Keberangkatan**
    - Pilih hari keberangkatan
@@ -68,9 +68,9 @@ sejatim? atau ambil aja beberapa kota jatim sama beberapa stasiunnya
    - Tampilkan jadwal kereta yang tersedia beserta kode keretanya
    - User memasukkan kode kereta yang ingin dipilih.
 
-4. **Pilih Kelas Peron**
-   - Tampilkan kelas peron yang tersedia (misalnya: Ekonomi, Bisnis, Eksekutif) beserta harga tiketnya
-   - User memilih kelas peron yang diinginkan.
+4. **Pilih Kelas**
+   - Tampilkan kelas yang tersedia (misalnya: Ekonomi, Bisnis, Eksekutif) beserta harga tiketnya
+   - User memilih kelas yang diinginkan.
 
 5. **Pilih Kursi**
    - Tampilkan kursi yang tersedia untuk kelas yang dipilih
@@ -93,3 +93,4 @@ sejatim? atau ambil aja beberapa kota jatim sama beberapa stasiunnya
 - Pastikan setiap langkah memiliki validasi data, seperti validasi stasiun, jadwal, kelas, dan pembayaran.
 - Pertimbangkan juga sistem penyimpanan database untuk setiap entitas (stasiun, kereta, kursi, tiket) untuk mempermudah manajemen data.
 
+? database pake apa? file handling? ada sqlite3 sih di python cuma kurang tau cara kerjanya

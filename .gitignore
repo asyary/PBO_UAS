@@ -8,6 +8,5 @@
 classes/__pycache__
 utils/__pycache__
 
-#db
-managemen_tiket.db
-db_handler.py
+# sqlite files
+*.sqbpro
