@@ -9,10 +9,3 @@ class Jadwal:
         for index, waktu in enumerate(self.waktu, start=1):
             print(f"{index}.) {waktu}")
 
-    # def Kursi():
-    #     daftar_kursi = []
-    #     alphabet = ['A', 'B', 'C', 'D', 'E']
-
-    #     for number in range(1, 25):  # Dari 1 hingga 24
-    #      for letter in alphabet:  # Untuk setiap huruf A sampai E
-    #          daftar_kursi.append(f"{number}{letter}")  # Menggabungkan angka dan huruf
