@@ -7,3 +7,6 @@
 #chace
 classes/__pycache__
 utils/__pycache__
+
+# sqlite files
+*.sqbpro
