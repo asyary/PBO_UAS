@@ -10,3 +10,4 @@ utils/__pycache__
 
 # sqlite files
 *.sqbpro
+db_handler.py
