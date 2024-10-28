@@ -1,4 +1,4 @@
-from utils import model as DbModel
+from utils import model as DbModel, input_validators as validator
 
 class User:
 	def __init__(self, email, password, nik = None, nama = None):
@@ -6,10 +6,16 @@ class User:
 		self.status_reg = False
 		self.db = DbModel.DbModel()
 		self.email = email
+		if not validator.email_handler(email):
+			self.clear()
+			return None
 		self.password = password
 		if nik is not None and nama is not None:
 			self.nik = nik
 			self.nama = nama
+			if not validator.nik_handler(nik) or not validator.name_handler(nama):
+				self.clear()
+				return None
 			self.status_reg = self.register()
 		else:
 			user_data = self.login()

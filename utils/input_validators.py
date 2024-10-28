@@ -2,27 +2,21 @@ import re
 from time import sleep
 from datetime import datetime
 
-def text_handler(input_text):
-    """Validates if the input only contains letters and spaces."""
-    if not re.match(r'^[a-zA-Z\s]+$', input_text):  # Restrict to letters and spaces
-        print("\nNama harus berisi huruf") #kalo masih pake CLI idk kalo pake GUI
-        sleep(0.5)
+def nik_handler(input_nik):
+	"""Validates if the input is a properly formatted NIK."""
+	if not re.match(r'^\d{16}$', input_nik):
+		return False
+	return True
+
+def name_handler(input_text):
+    """Validates if the input only contains allowed characters."""
+    if not re.match(r'^[A-Za-z\.\'\-\s]{2,60}$', input_text):
         return False
     return True
 
 def email_handler(input_email):
     """Validates if the input is a properly formatted email address."""
-    if not re.match(r'^[\w\-]+@[\w\.-]+\.\w+$', input_email):  # Basic email pattern
-        print("\nEmail tidak valid")
-        sleep(0.5)
-        return False
-    return True
-
-def phone_handler(input_phone):
-    """Validates if the input is a properly formatted phone number."""
-    if not re.match(r'^\+?\d{9,15}$', input_phone):  # Allows + at the start and 9-15 digits
-        print("\nNomor telepon tidak valid")
-        sleep(0.5)
+    if not re.match(r'^[\w\-]+@[\w\.-]+\.\w+$', input_email):
         return False
     return True
 
@@ -48,6 +42,4 @@ def numeric_handler(input_value, min_value=None, max_value=None):
             return False
         return True
     except ValueError:
-        print("\nInput harus berupa angka")
-        sleep(0.5)
         return False
