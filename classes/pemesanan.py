@@ -1,8 +1,9 @@
 class Pemesanan:
-    def __init__(self, id_user, id_jadwal, kode_pemesanan, gerbong, kursi, status):
-       self.id_user = id_user
-       self.id_jadwal = id_jadwal
-       self.kode_pemesanan = kode_pemesanan
+    def __init__(self, gerbong, kursi):
        self.gerbong = gerbong
        self.kursi = kursi
-       self.status = status
+       
+       self.id_user = None
+       self.id_jadwal = None
+       self.kode_pemesanan = None
+       self.status = None

@@ -33,7 +33,3 @@ class User:
 	
 	def register(self):
 		pass
-        
-class Admin (User):
-    def __init__(self, id_user, nik, nama, email, role='admin'):
-        super().__init__(id_user, nik, nama, email, role)
