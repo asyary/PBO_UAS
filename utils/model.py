@@ -16,6 +16,5 @@ class DbModel:
         self.cursor = self.connection.cursor()
 
     def close(self):
-        """Close the database connection"""
         if self.connection:
             self.connection.close()
