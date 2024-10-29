@@ -1,6 +1,7 @@
 from .model import DbModel
 from classes.user import User
 from classes.stasiun import Stasiun
+from classes.jadwal import Jadwal
 
 class Utils:
 	def cek_koneksi():
@@ -32,3 +33,7 @@ class Utils:
 	def get_stasiun():
 		print("Successfully get all stasiun")
 		return Stasiun.get_all()
+	
+	def get_jadwal(stasiun_awal, stasiun_akhir, tanggal):
+		print("Getting jadwal")
+		return Jadwal(stasiun_awal, stasiun_akhir, tanggal)
