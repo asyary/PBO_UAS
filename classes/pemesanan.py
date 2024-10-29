@@ -64,8 +64,9 @@ class Pemesanan:
     
     
     
-    def load_all(self): #for history
+    def load_all(self,id_input): #for history
         self.db.connect()
+        self.id_user = id_input
         query = """
             SELECT p.*, u.nama AS nama, u.nik AS nik, s_awal.nama AS stasiun_awal, s_akhir.nama AS stasiun_akhir, j.waktu AS waktu
             FROM pemesanan AS p
@@ -82,7 +83,9 @@ class Pemesanan:
         self.db.close()
         return result_all
     
-
+    def load_all_admin(self):
+        pass
+        
     
     # show one latest jadwal
     def show_jadwal(self):
