@@ -10,7 +10,7 @@ class GUI:
 		self.center_window(self.window)
 		self.window.resizable(False, False)
 
-		label = tk.Label(self.window, text="PT H+3 Pensi Presiden")
+		label = tk.Label(self.window, text="PT KJT", font=("Times New Roman", 16))
 		label.pack(pady=30)
 
 		button_frame = tk.Frame(self.window)
@@ -76,11 +76,10 @@ class GUI:
 			user = Utils.login(email, password)
 
 			if user.status:
-				role_msg = "Admin" if user.role == 'admin' else "User"
-				messagebox.showinfo("Login", f"Login berhasil sebagai {role_msg} {user.nama}!")
+				messagebox.showinfo("Berhasil", f"Login berhasil sebagai {user.role} {user.nama}!")
 				login_window.destroy()
 			else:
-				messagebox.showerror("Login", "Login gagal. Email atau password salah.")
+				messagebox.showerror("Gagal", "Login gagal. Email atau password salah.")
 				login_window.focus_set()
 
 		login_button = tk.Button(login_window, text="Login", command=login)
