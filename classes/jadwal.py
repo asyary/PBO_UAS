@@ -11,23 +11,31 @@ class Jadwal:
         # Fetching all schedules matching the given stations
         self.jadwal_data = self.valid()
         
-        # Initialize instance variables with data from the first result, if available
+        # Store all schedules in a list
+        self.jadwal_list = []
+        
+        # Initialize instance variables for each result
         if self.jadwal_data:
             for get_jadwal in self.jadwal_data:
-                first_jadwal = get_jadwal
-                self.id_jadwal = first_jadwal.get('id_jadwal')
-                self.harga_eko = first_jadwal.get('harga_eko')
-                self.harga_bis = first_jadwal.get('harga_bis')
-                self.harga_eks = first_jadwal.get('harga_eks')
-                self.waktu = first_jadwal.get('waktu')
+                jadwal_info = {
+                    'id_jadwal': get_jadwal.get('id_jadwal'),
+                    'harga_eko': get_jadwal.get('harga_eko'),
+                    'harga_bis': get_jadwal.get('harga_bis'),
+                    'harga_eks': get_jadwal.get('harga_eks'),
+                    'waktu': get_jadwal.get('waktu'),
+                    's_awal': get_jadwal.get('s_awal'),
+                    's_akhir': get_jadwal.get('s_akhir')
+                }
+                self.jadwal_list.append(jadwal_info)  # Append each schedule to the list
         else:
+            # Set to an empty list if no data is found
+            self.jadwals = []
             # Set to None if no data is found
             self.id_jadwal = None
             self.harga_eko = None
             self.harga_bis = None
             self.harga_eks = None
             self.waktu = None
-            
             #fungsi masukan ke db
 
     def valid(self):
