@@ -109,11 +109,12 @@ class Pemesanan:
         self.kode_pemesanan = kode_gen()
         query = """
             INSERT INTO pemesanan (id_user, id_jadwal, kode, gerbong, kursi, status)
-            VALUES (?, ?, ?, ?, ?, 0)
+            VALUES (?, ?, ?, ?, ?, 1)
         """
         self.db.cursor.execute(query, (self.id_user, self.id_jadwal, self.kode_pemesanan, self.gerbong, self.kursi))
         self.db.connection.commit()
         self.db.close()
+        return self.kode_pemesanan
         # print("Booking inserted successfully.")
 
     def delete(self):

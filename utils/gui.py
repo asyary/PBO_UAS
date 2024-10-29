@@ -246,6 +246,102 @@ class GUI:
 
 		tk.Button(user_window, text="Log Out", command=user_window.destroy).pack(side="right", padx=10, pady=5)
 
+	def pilih_kursi(self, user, jadwal):
+		waktu_tempuh_window = tk.Tk()
+		waktu_tempuh_window.title("Waktu Tempuh")
+		waktu_tempuh_window.geometry("300x200")
+		self.center_window(waktu_tempuh_window)
+		waktu_tempuh_window.resizable(False, False)
+
+		coach_list = ["EKS-1", "EKS-2", 
+					"BIS-1", "BIS-2", "BIS-3", 
+					"EKO-1", "EKO-2", "EKO-3", "EKO-4"]
+
+		# Function to display the seat selection window
+		def show_seat_selection(selected_time):
+			seat_window = tk.Tk()
+			seat_window.title("Kursi yang Ditempati")
+			seat_window.geometry("350x700")
+			self.center_window(seat_window)
+			seat_window.resizable(False, False)
+
+			tk.Label(seat_window, text="Pilihan Gerbong:").pack(pady=5)
+			selected_coach = tk.StringVar(seat_window)
+			selected_coach.set(coach_list[0])
+
+			coach_menu = tk.OptionMenu(seat_window, selected_coach, *coach_list)
+			coach_menu.pack(pady=10)
+
+			# Seat layout label
+			tk.Label(seat_window, text="Pilih Kursi:").pack(pady=5)
+
+			# Frame for seat buttons
+			seat_frame = tk.Frame(seat_window)
+			seat_frame.pack(pady=5)
+
+			rows = 16 
+			columns = ["A", "B", "C", "D"]
+			selected_seat = tk.StringVar()
+
+			def select_seat(row, col):
+				selected_seat.set(f"{col}{row}")
+
+			for row in range(1, rows + 1):
+				for col in columns:
+					seat_text = f"{col}{row}"
+					# if col == "D" and row == 6:
+					# 	seat_button = tk.Button(seat_frame, text=seat_text, width=4, state=tk.DISABLED)
+					# else:
+					seat_button = tk.Button(seat_frame, text=seat_text, width=4, command=lambda r=row, c=col: select_seat(r, c))
+					col_index = columns.index(col)
+					if col == "B":
+						seat_button.grid(row=row-1, column=col_index, padx=(2, 40), pady=2)  # Add extra space after column C
+					else:
+						seat_button.grid(row=row-1, column=col_index, padx=2, pady=2)
+
+			# Confirm and Cancel buttons
+			def confirm_selection():
+				selected_coach_value = selected_coach.get()
+				selected_seat_value = selected_seat.get()
+				if selected_seat_value:
+					messagebox.showinfo("Konfirmasi", f"Gerbong: {selected_coach_value}, Kursi: {selected_seat_value}, Waktu: {selected_time}")
+					id_user = user.id
+					id_jadwal = next(item['id'] for item in jadwal if item['waktu'] == selected_time)
+					kode = Utils.add_pesanan(id_user, id_jadwal, selected_coach_value, selected_seat_value)
+					messagebox.showinfo("Pemesanan", f"Pemesanan berhasil dengan kode {kode}!")
+					seat_window.destroy()
+					self.show_user_menu(user)
+				else:
+					messagebox.showerror("Error", "Pilih kursi terlebih dahulu.")
+
+			def cancel_selection():
+				seat_window.destroy()
+
+			tk.Button(seat_window, text="Cancel", command=cancel_selection).pack(side="left", pady=10, padx=10)
+			tk.Button(seat_window, text="Confirm", command=confirm_selection).pack(side="right", pady=10, padx=10)
+
+		# Sample function to show travel time selection menu
+		def show_waktu_tempuh_menu():
+			tk.Label(waktu_tempuh_window, text="Waktu Perjalanan", font=("Arial", 16)).pack(pady=20)
+
+			# List of available times
+			waktu_tempuh_list = [item['waktu'] for item in jadwal]
+
+			selected_waktu = tk.StringVar(waktu_tempuh_window)
+			selected_waktu.set(waktu_tempuh_list[0])  # default value
+
+			waktu_tempuh_menu = tk.OptionMenu(waktu_tempuh_window, selected_waktu, *waktu_tempuh_list)
+			waktu_tempuh_menu.pack(pady=10)
+
+			def confirm_waktu_tempuh():
+				chosen_waktu = selected_waktu.get()
+				waktu_tempuh_window.destroy()  # Close time selection window
+				show_seat_selection(chosen_waktu)  # Open seat selection with chosen time
+
+			tk.Button(waktu_tempuh_window, text="Confirm", command=confirm_waktu_tempuh).pack(pady=10)
+		
+		show_waktu_tempuh_menu()
+
 """	# Fungsi untuk menangani klik tombol Login
 	def on_login_click():
 		login_window = tk.Toplevel(window)

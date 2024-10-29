@@ -1,8 +1,10 @@
 from .model import DbModel
+from .kode_generator import generate_random_alphanumeric as kode_gen
 from classes.user import User
 from classes.stasiun import Stasiun
 from classes.jadwal import Jadwal
 from classes.pemesanan import Pemesanan
+
 class Utils:
 	def cek_koneksi():
 		try :
@@ -37,9 +39,9 @@ class Utils:
 	def get_jadwal(stasiun_awal, stasiun_akhir, tanggal):
 		print("Getting jadwal")
 		return Jadwal(stasiun_awal, stasiun_akhir, tanggal)
-
-	def get_history_user(user, id_input):
-		return Pemesanan.load_all()
-
-	def get_user(user):
-		return user
+	
+	def add_pesanan(id_user, id_jadwal, gerbong, kursi):
+		print("Adding pesanan")
+		pesanan = Pemesanan(id_user, id_jadwal, gerbong, kursi)
+		pesanan = pesanan.new()
+		return pesanan
