@@ -1,4 +1,6 @@
 import tkinter as tk
+from tkcalendar import Calendar
+from datetime import datetime
 from tkinter import messagebox
 from .helper import Utils
 
@@ -78,6 +80,11 @@ class GUI:
 			if user.status:
 				messagebox.showinfo("Berhasil", f"Login berhasil sebagai {user.role} {user.nama}!")
 				login_window.destroy()
+				self.window.destroy()
+				if user.role == 'admin':
+					self.show_admin_menu(user)
+				else:
+					self.show_user_menu(user)
 			else:
 				messagebox.showerror("Gagal", "Login gagal. Email atau password salah.")
 				login_window.focus_set()
@@ -127,17 +134,19 @@ class GUI:
 		register_button.pack(pady=10)
 	
    # Fungsi untuk menampilkan tampilan admin
-"""	def show_admin_menu():
-		admin_window = tk.Toplevel(window)
+	def show_admin_menu(self, user):
+		admin_window = tk.Tk()
 		admin_window.title("Admin Menu")
 		admin_window.geometry("400x300")
+		self.center_window(admin_window)
+		admin_window.resizable(False, False)
 
 		tk.Label(admin_window, text="Admin Menu", font=("Arial", 16)).pack(pady=10)
 
-		def apply_ticket():
-			messagebox.showinfo("Apply Ticket", "Fitur apply ticket belum tersedia.")
+		def acc_tiket():
+			messagebox.showinfo("Acc Ticket", "Fitur acc ticket belum tersedia.")
 
-		def schedule():
+		def jadwal():
 			messagebox.showinfo("Penjadwalan", "Fitur penjadwalan belum tersedia.")
 
 		def history():
@@ -146,51 +155,74 @@ class GUI:
 		button_frame = tk.Frame(admin_window)
 		button_frame.pack(pady=10)
 
-		tk.Button(button_frame, text="Apply Ticket", command=apply_ticket).pack(side="left", padx=5)
-		tk.Button(button_frame, text="Penjadwalan", command=schedule).pack(side="left", padx=5)
+		tk.Button(button_frame, text="Apply Ticket", command=acc_tiket).pack(side="left", padx=5)
+		tk.Button(button_frame, text="Penjadwalan", command=jadwal).pack(side="left", padx=5)
 		tk.Button(button_frame, text="History", command=history).pack(side="left", padx=5)
 
 		tk.Button(admin_window, text="Log Out", command=admin_window.destroy).pack(side="bottom", pady=10)
 
 	# Fungsi untuk menampilkan tampilan user
-	def show_user_menu():
-		user_window = tk.Toplevel(window)
+	def show_user_menu(self,  user):
+		user_window = tk.Tk()
 		user_window.title("User Menu")
-		user_window.geometry("400x300")
+		user_window.geometry("400x450")
+		self.center_window(user_window)
+		user_window.resizable(False, False)
 
 		tk.Label(user_window, text="User Menu", font=("Arial", 16)).pack(pady=10)
 
-		tk.Label(user_window, text="A").pack(pady=5)
-		input1 = tk.Entry(user_window)
-		input1.pack(pady=5)
+		stasiun_frame = tk.Frame(user_window)
+		stasiun_frame.pack(pady=5)
 
-		tk.Label(user_window, text="->").pack(pady=5)
+		stasiun = Utils.get_stasiun()
 
-		tk.Label(user_window, text="B").pack(pady=5)
-		input2 = tk.Entry(user_window)
-		input2.pack(pady=5)
+        # Stasiun Awal
+		awal_frame = tk.Frame(stasiun_frame)
+		awal_frame.pack(side=tk.LEFT, padx=5)
+		tk.Label(awal_frame, text="Stasiun Awal").pack()
+		stasiun_nama = [f"{s['kode']} - {s['nama']}" for s in stasiun]
+		stasiun_awal_var = tk.StringVar(awal_frame)
+		input1 = tk.OptionMenu(awal_frame, stasiun_awal_var, *stasiun_nama)
+		stasiun_awal_var.set(stasiun_nama[0])  # Set default value
+		input1.pack()
+
+		# Arrow
+		tk.Label(stasiun_frame, text="->").pack(side=tk.LEFT, padx=5, pady=10)
+
+		# Stasiun Akhir
+		akhir_frame = tk.Frame(stasiun_frame)
+		akhir_frame.pack(side=tk.LEFT, padx=5)
+		tk.Label(akhir_frame, text="Stasiun Akhir").pack()
+		stasiun_akhir_var = tk.StringVar(akhir_frame)
+		input2 = tk.OptionMenu(akhir_frame, stasiun_akhir_var, *stasiun_nama)
+		stasiun_akhir_var.set(stasiun_nama[0])  # Set default value
+		input2.pack()
 
 		tk.Label(user_window, text="Tanggal:").pack(pady=5)
-		date_entry = tk.Entry(user_window)
-		date_entry.pack(pady=5)
+		calendar = Calendar(user_window, selectmode='day', year=2024, month=10, day=29)
+		calendar.pack(pady=5)
 
 		def confirm():
 			# Lakukan sesuatu dengan data input
-			selected_input1 = input1.get()
-			selected_input2 = input2.get()
-			selected_date = date_entry.get()
-			messagebox.showinfo("Confirm", f"Input 1: {selected_input1}, Input 2: {selected_input2}, Tanggal: {selected_date}")
+			selected_stasiun_awal = stasiun_awal_var.get()
+			selected_stasiun_akhir = stasiun_akhir_var.get()
+			selected_date = calendar.get_date()
+			selected_date = datetime.strptime(selected_date, "%m/%d/%y").strftime("%Y-%m-%d")
+			if selected_stasiun_awal == selected_stasiun_akhir:
+				messagebox.showerror("Error", "Stasiun awal dan stasiun akhir tidak boleh sama.")
+				return
+			messagebox.showinfo("Confirm", f"Input 1: {selected_stasiun_awal}, Input 2: {selected_stasiun_akhir}, Tanggal: {selected_date}")
 
-		tk.Button(user_window, text="Confirm", command=confirm).pack(pady=10)
+		tk.Button(user_window, text="Confirm", command=confirm).pack(pady=15)
 
 		def show_history():
 			messagebox.showinfo("History", "Fitur history belum tersedia.")
 
-		tk.Button(user_window, text="History", command=show_history).pack(side="top", pady=5)
+		tk.Button(user_window, text="History", command=show_history).pack(side="left", padx=10, pady=5)
 
-		tk.Button(user_window, text="Log Out", command=user_window.destroy).pack(side="bottom", pady=10)
+		tk.Button(user_window, text="Log Out", command=user_window.destroy).pack(side="right", padx=10, pady=5)
 
-	# Fungsi untuk menangani klik tombol Login
+"""	# Fungsi untuk menangani klik tombol Login
 	def on_login_click():
 		login_window = tk.Toplevel(window)
 		login_window.title("Login")
