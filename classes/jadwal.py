@@ -1,11 +1,12 @@
 from utils import model as DbModel
 
 class Jadwal:
-    def __init__(self, stasiun_awal, stasiun_akhir):
+    def __init__(self, stasiun_awal, stasiun_akhir, tanggal):
         self.db = DbModel.DbModel()
         
         self.stasiun_awal = stasiun_awal
         self.stasiun_akhir = stasiun_akhir
+        self.tanggal = tanggal
         
         # Fetching all schedules matching the given stations
         self.jadwal_data = self.valid()
@@ -36,9 +37,9 @@ class Jadwal:
             FROM jadwal AS j
             JOIN stasiun AS s_awal ON j.stasiun_awal = s_awal.id
             JOIN stasiun AS s_akhir ON j.stasiun_akhir = s_akhir.id
-            WHERE j.stasiun_awal = ? AND j.stasiun_akhir = ?
+            WHERE j.stasiun_awal = ? AND j.stasiun_akhir = ? AND j.waktu LIKE ?
         """
-        self.db.cursor.execute(query, (self.stasiun_awal, self.stasiun_akhir))
+        self.db.cursor.execute(query, (self.stasiun_awal, self.stasiun_akhir, f"{self.tanggal}%"))
         rows = self.db.cursor.fetchall()
         
         result = [dict(row) for row in rows] if rows else None
