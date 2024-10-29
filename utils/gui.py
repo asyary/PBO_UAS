@@ -267,7 +267,6 @@ class GUI:
 
 			def select_seat(row, col):
 				selected_seat.set(f"{col}{row}")
-				messagebox.showinfo("Kursi yang Dipilih", f"Kursi yang dipilih: {selected_coach.get()} {selected_seat.get()}")
 
 			for row in range(1, rows + 1):
 				for col in columns:
@@ -288,7 +287,12 @@ class GUI:
 				selected_seat_value = selected_seat.get()
 				if selected_seat_value:
 					messagebox.showinfo("Konfirmasi", f"Gerbong: {selected_coach_value}, Kursi: {selected_seat_value}, Waktu: {selected_time}")
+					id_user = user.id
+					id_jadwal = next(item['id'] for item in jadwal if item['waktu'] == selected_time)
+					kode = Utils.add_pesanan(id_user, id_jadwal, selected_coach_value, selected_seat_value)
+					messagebox.showinfo("Pemesanan", f"Pemesanan berhasil dengan kode {kode}!")
 					seat_window.destroy()
+					self.show_user_menu(user)
 				else:
 					messagebox.showerror("Error", "Pilih kursi terlebih dahulu.")
 
@@ -300,7 +304,7 @@ class GUI:
 
 		# Sample function to show travel time selection menu
 		def show_waktu_tempuh_menu():
-			tk.Label(waktu_tempuh_window, text="Waktu Tempuh", font=("Arial", 16)).pack(pady=20)
+			tk.Label(waktu_tempuh_window, text="Waktu Perjalanan", font=("Arial", 16)).pack(pady=20)
 
 			# List of available times
 			waktu_tempuh_list = [item['waktu'] for item in jadwal]
