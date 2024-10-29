@@ -1,5 +1,5 @@
 from utils import model as DbModel
-from utils import kode_generator as Kode_gen
+from utils.kode_generator import generate_random_alphanumeric as kode_gen
 class Pemesanan:
     def __init__(self, id_user, id_jadwal, gerbong, kursi):
        self.db = DbModel.DbModel()
@@ -84,26 +84,26 @@ class Pemesanan:
     
 
     
-    # # show one latest jadwal
-    # def show_jadwal(self):
-    #     # Check if pemesanan data is available
-    #     if not self.pemesanan_data:
-    #         print("Belum ada pemesanan yang sesuai.")
-    #         return
-    #     # Display reservation details
-    #     print("Reservation Details:")
-    #     print(f"  Name           : {self.pemesanan_data.get('nama')}")
-    #     print(f"  NIK            : {self.pemesanan_data.get('nik')}")
-    #     print(f"  Stasiun Awal   : {self.pemesanan_data.get('stasiun_awal')}")
-    #     print(f"  Stasiun Akhir  : {self.pemesanan_data.get('stasiun_akhir')}")
-    #     print(f"  Waktu Keberangkatan : {self.pemesanan_data.get('waktu')}")
-    #     print(f"  Gerbong        : {self.pemesanan_data.get('gerbong')}")
-    #     print(f"  Kursi          : {self.pemesanan_data.get('kursi')}")
-    #     print(f"  Status         : {self.pemesanan_data.get('status')}")
+    # show one latest jadwal
+    def show_jadwal(self):
+        # Check if pemesanan data is available
+        if not self.pemesanan_data:
+            print("Belum ada pemesanan yang sesuai.")
+            return
+        # Display reservation details
+        print("Reservation Details:")
+        print(f"  Name           : {self.pemesanan_data.get('nama')}")
+        print(f"  NIK            : {self.pemesanan_data.get('nik')}")
+        print(f"  Stasiun Awal   : {self.pemesanan_data.get('stasiun_awal')}")
+        print(f"  Stasiun Akhir  : {self.pemesanan_data.get('stasiun_akhir')}")
+        print(f"  Waktu Keberangkatan : {self.pemesanan_data.get('waktu')}")
+        print(f"  Gerbong        : {self.pemesanan_data.get('gerbong')}")
+        print(f"  Kursi          : {self.pemesanan_data.get('kursi')}")
+        print(f"  Status         : {self.pemesanan_data.get('status')}")
         
     def new(self):
         self.db.connect()
-        self.kode_pemesanan = Kode_gen() #errrorrrr
+        self.kode_pemesanan = kode_gen()
         query = """
             INSERT INTO pemesanan (id_user, id_jadwal, kode, gerbong, kursi, status)
             VALUES (?, ?, ?, ?, ?, 0)
@@ -131,7 +131,7 @@ class Pemesanan:
             SET status = 1
             WHERE kode = ?
         """
-        self.db.cursor.execute(query, (self.kode_pemesanan))
+        self.db.cursor.execute(query, (self.kode_pemesanan,))
         self.db.connection.commit()
         self.db.close()
-        print("Booking approved successfully.")    
+        #belum ada try except
