@@ -1,4 +1,5 @@
 from utils import model as DbModel, input_validators as validator
+import hashlib
 
 class User:
 	def __init__(self, email, password, nik = None, nama = None):
@@ -9,7 +10,7 @@ class User:
 		if not validator.email_handler(email):
 			self.clear()
 			return None
-		self.password = password
+		self.password = hashlib.md5((password + "m}&^p!B]0<").encode()).hexdigest()
 		if nik is not None and nama is not None:
 			self.nik = nik
 			self.nama = nama
