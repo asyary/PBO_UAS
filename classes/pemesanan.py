@@ -64,7 +64,7 @@ class Pemesanan:
     
     
     
-    def load_all(self): #for 
+    def load_all(self): #for history
         self.db.connect()
         query = """
             SELECT p.*, u.nama AS nama, u.nik AS nik, s_awal.nama AS stasiun_awal, s_akhir.nama AS stasiun_akhir, j.waktu AS waktu
@@ -119,6 +119,7 @@ class Pemesanan:
             DELETE FROM pemesanan
             WHERE kode = ?
         """
+  
         self.db.cursor.execute(query, (self.kode_pemesanan))
         self.db.connection.commit()
         self.db.close()
@@ -134,4 +135,18 @@ class Pemesanan:
         self.db.cursor.execute(query, (self.kode_pemesanan,))
         self.db.connection.commit()
         self.db.close()
-        #belum ada try except
+        #try except
+     
+    def back(self):
+        self.clear()
+            
+    def clear(self):
+        self.id = None
+        self.id_user = None
+        self.id_jadwal = None
+        self.kode_pemesanan = None
+        self.gerbong = None
+        self.kursi = None
+        self.status = None
+    
+   
