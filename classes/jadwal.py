@@ -25,6 +25,8 @@ class Jadwal:
             self.harga_bis = None
             self.harga_eks = None
             self.waktu = None
+            
+            #fungsi masukan ke db
 
     def valid(self):
         self.db.connect()
@@ -42,18 +44,28 @@ class Jadwal:
         self.db.close()
         return result
     
-    def show_jadwal(self):
-        if not self.jadwal_data:
-            print("No schedules found for the selected stations.")
-            return
+    # def insert_db(self):
+    #     self.db.connect()
+    #     query = """
+    #         SELECT j.*, s_awal.nama AS s_awal, s_akhir.nama AS s_akhir,
+    #         FROM jadwal AS j
+    #         JOIN stasiun AS s_awal ON j.stasiun_awal = s_awal.id
+    #         JOIN stasiun AS s_akhir ON j.stasiun_akhir = s_akhir.id
+    #         WHERE j.stasiun_awal = ? AND j.stasiun_akhir = ?
+    #     """
+    
+    # def show_jadwal(self):
+    #     if not self.jadwal_data:
+    #         print("No schedules found for the selected stations.")
+    #         return
         
-        # Display each schedule
-        for index, jadwal in enumerate(self.jadwal_data, start=1):
-            print(f"Schedule {index}:")
-            print(f"  ID Jadwal      : {jadwal.get('id')}")
-            print(f"  Stasiun Awal   : {jadwal.get('s_awal')}")
-            print(f"  Stasiun Akhir  : {jadwal.get('s_akhir')}")
-            print(f"  Harga Ekonomi  : {jadwal.get('harga_eko')}")
-            print(f"  Harga Bisnis   : {jadwal.get('harga_bis')}")
-            print(f"  Harga Eksekutif: {jadwal.get('harga_eks')}")
-            print(f"  Waktu          : {jadwal.get('waktu')}\n")
+    #     # Display each schedule
+    #     for index, jadwal in enumerate(self.jadwal_data, start=1):
+    #         print(f"Schedule {index}:")
+    #         print(f"  ID Jadwal      : {jadwal.get('id')}")
+    #         print(f"  Stasiun Awal   : {jadwal.get('s_awal')}")
+    #         print(f"  Stasiun Akhir  : {jadwal.get('s_akhir')}")
+    #         print(f"  Harga Ekonomi  : {jadwal.get('harga_eko')}")
+    #         print(f"  Harga Bisnis   : {jadwal.get('harga_bis')}")
+    #         print(f"  Harga Eksekutif: {jadwal.get('harga_eks')}")
+    #         print(f"  Waktu          : {jadwal.get('waktu')}\n")
