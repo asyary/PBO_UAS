@@ -1,5 +1,5 @@
 from utils import model as DbModel
-
+from utils import kode_generator as Kode_gen
 class Pemesanan:
     def __init__(self, id_user, id_jadwal, gerbong, kursi):
        self.db = DbModel.DbModel()
@@ -82,6 +82,7 @@ class Pemesanan:
         self.db.close()
         return result_all
     
+
     
     # # show one latest jadwal
     # def show_jadwal(self):
@@ -100,4 +101,37 @@ class Pemesanan:
     #     print(f"  Kursi          : {self.pemesanan_data.get('kursi')}")
     #     print(f"  Status         : {self.pemesanan_data.get('status')}")
         
-    
+    def new(self):
+        self.db.connect()
+        self.kode_pemesanan = Kode_gen() #errrorrrr
+        query = """
+            INSERT INTO pemesanan (id_user, id_jadwal, kode, gerbong, kursi, status)
+            VALUES (?, ?, ?, ?, ?, 0)
+        """
+        self.db.cursor.execute(query, (self.id_user, self.id_jadwal, self.kode_pemesanan, self.gerbong, self.kursi))
+        self.db.connection.commit()
+        self.db.close()
+        # print("Booking inserted successfully.")
+
+    def delete(self):
+        self.db.connect()
+        query = """
+            DELETE FROM pemesanan
+            WHERE kode = ?
+        """
+        self.db.cursor.execute(query, (self.kode_pemesanan))
+        self.db.connection.commit()
+        self.db.close()
+        # print("Booking deleted successfully.")
+
+    def acc(self):
+        self.db.connect()
+        query = """
+            UPDATE pemesanan
+            SET status = 1
+            WHERE kode = ?
+        """
+        self.db.cursor.execute(query, (self.kode_pemesanan))
+        self.db.connection.commit()
+        self.db.close()
+        print("Booking approved successfully.")    
