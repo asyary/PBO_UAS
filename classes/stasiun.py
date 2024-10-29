@@ -1,7 +1,12 @@
+from utils import model as DbModel
+
 class Stasiun:
-    def __init__(self, lokasi, nama, kode):
-        self.lokasi = lokasi
-        self.nama = nama
-        self.kode= kode
-        
-        self.id_stasiun = None
+	def get_all():
+		db = DbModel.DbModel()
+		db.connect()
+		query = "SELECT * FROM stasiun"
+		db.cursor.execute(query)
+		rows = db.cursor.fetchall()
+		result = [dict(row) for row in rows] if rows else None
+		db.close()
+		return result
