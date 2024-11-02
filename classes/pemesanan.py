@@ -88,7 +88,27 @@ class Pemesanan:
         return result_all
     
     def load_all_admin(self):
-        pass
+        self.db.connect()
+        query = """
+            SELECT p.*, u.nama AS nama, u.nik AS nik, s_awal.nama AS stasiun_awal, s_awal.kode as kode_stasiun_awal, s_akhir.nama AS stasiun_akhir, s_akhir.kode as kode_stasiun_akhir, j.waktu AS waktu,
+            case when p.gerbong = 'EKS' then j.harga_eks 
+                when p.gerbong = 'BIS' then j.harga_bis 
+                else j.harga_eko 
+            end as harga
+            
+            FROM pemesanan AS p
+            JOIN jadwal AS j ON p.id_jadwal = j.id
+            JOIN user AS u ON p.id_user = u.id
+            JOIN stasiun AS s_awal ON j.stasiun_awal = s_awal.id
+            JOIN stasiun AS s_akhir ON j.stasiun_akhir = s_akhir.id
+            WHERE p.status = 0
+            ORDER BY j.waktu DESC
+        """
+        self.db.cursor.execute(query)
+        rows = self.db.cursor.fetchall()
+        result_all = [dict(row) for row in rows] if rows else None
+        self.db.close()
+        return result_all
         
     
     # show one latest jadwal
