@@ -144,7 +144,12 @@ class GUI:
 		tk.Label(admin_window, text="Admin Menu", font=("Arial", 16)).pack(pady=10)
 
 		def acc_tiket():
-			messagebox.showinfo("Acc Ticket", "Fitur acc ticket belum tersedia.")
+			acc_window = tk.Toplevel(admin_window)
+			acc_window.title("Persetujuan Tiket")
+			acc_window.geometry("500x800")
+			acc_tree = tk.treeview(acc_window)
+			# bikin semacam tabel?
+
 
 		def jadwal():
 			messagebox.showinfo("Penjadwalan", "Fitur penjadwalan belum tersedia.")
