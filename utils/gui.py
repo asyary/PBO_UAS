@@ -150,13 +150,13 @@ class GUI:
 			messagebox.showinfo("Penjadwalan", "Fitur penjadwalan belum tersedia.")
 
 		def history():
-			  	messagebox.showinfo("History", "Fitur history belum tersedia.")
+			messagebox.showinfo("History", "Fitur history belum tersedia.")
 			
 			
 
 		button_frame = tk.Frame(admin_window)
 		button_frame.pack(pady=10)
-
+		
 		tk.Button(button_frame, text="Apply Ticket", command=acc_tiket).pack(side="left", padx=5)
 		tk.Button(button_frame, text="Penjadwalan", command=jadwal).pack(side="left", padx=5)
 		tk.Button(button_frame, text="History", command=history).pack(side="left", padx=5)
@@ -222,24 +222,24 @@ class GUI:
 			history_window.title("History Pemesanan")
 			history_window.geometry("500x400")
 			
-			tk.Label(history_window, text="History Pemesanan", font=("Arial", 16)).pack(pady=10)
-			user_search = Utils.get_user()
-			history_data = Utils.get_history_user(user_search.id)
+			tk.Label(history_window, text="History Pemesanan", font=("Arial", 16)).pack()
+			history_data = Utils.history_pesanan(user.id)
+			print(f"History data for user_id {user.id}")
 			if history_data:
 				for booking in history_data:
 					booking_frame = tk.Frame(history_window, bd=1, relief="solid")
 					booking_frame.pack(fill="x", padx=10, pady=5)
 					booking_info = (
-						f"Booking ID: {booking['id_pemesanan']}\n"
-						f"User: {booking['nama']}, NIK: {booking['nik']}\n"
-						f"From: {booking['stasiun_awal']} To: {booking['stasiun_akhir']}\n"
-						f"Date: {booking['tanggal']}, Time: {booking['waktu']}\n"
-						f"Status: {'Approved' if booking['status'] == 1 else 'Pending'}"
+						f"Kode Tiket\t: {booking.get('kode')}\n"
+						f"Nama\t\t: {booking.get('nama')}\n"
+      					f"NIK\t\t: {booking.get('nik')}\n"
+						f"Tujuan\t\t: {(booking.get('stasiun_awal').upper())} ({booking.get('kode_stasiun_awal')})  >>  {booking.get('stasiun_akhir').upper()} ({booking.get('kode_stasiun_akhir')})\n"
+						f"Berangkat\t: {booking.get('waktu')}\n"
+						f"Status\t\t: {'Approved' if booking.get('status') == 1 else 'Pending'}"
 					)
-					tk.Label(booking_frame, text=booking_info, justify="left").pack()
-
-				else:
-					tk.Label(history_window, text="No booking history found.", font=("Arial", 12)).pack(pady=20)
+					tk.Label(booking_frame, text=booking_info, font=("Arial", 10), justify="left").pack(anchor="w", padx=10, pady=5)	
+			else:
+				tk.Label(history_window, text=f"No booking of user {user.nama} history found.", font=("Arial", 12)).pack(pady=20)
 
 			 
 		tk.Button(user_window, text="History", command=show_history).pack(side="left", padx=10, pady=5)

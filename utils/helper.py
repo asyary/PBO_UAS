@@ -45,3 +45,11 @@ class Utils:
 		pesanan = Pemesanan(id_user, id_jadwal, gerbong, kursi)
 		pesanan = pesanan.new()
 		return pesanan
+	
+	def history_pesanan(id_user):
+		print("Getting history pesanan")
+		pesanan = Pemesanan(id_user, None, None, None)
+		print(f"user id : {pesanan.id_user}")
+		pesanan_data = pesanan.load_all()
+		print(f"Type of pesanan_data: {type(pesanan_data)}")
+		return pesanan_data

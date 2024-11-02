@@ -34,20 +34,20 @@ class Pemesanan:
         self.db.close()
         return result
     
-    def history(self):
-        self.pemesanan_history = self.load_all()
-        #took all things idk
-        for get_pemesanan in self.pemesanan_history:
-            self.gerbong = get_pemesanan.get('gerbong')
-            self.kursi = get_pemesanan.get('kursi')
-            self.kode_pemesanan = get_pemesanan.get('kode')
-            self.status = get_pemesanan.get('status') 
-        else:
-             # Set to None if no data is found
-            self.gerbong = None
-            self.kursi = None
-            self.kode_pemesanan = None
-            self.status = None
+    # def history(self, id_user):
+    #     self.pemesanan_history = self.load_all()
+    #     #took all things idk
+    #     for get_pemesanan in self.pemesanan_history:
+    #         self.gerbong = get_pemesanan.get('gerbong')
+    #         self.kursi = get_pemesanan.get('kursi')
+    #         self.kode_pemesanan = get_pemesanan.get('kode')
+    #         self.status = get_pemesanan.get('status') 
+    #     else:
+    #          # Set to None if no data is found
+    #         self.gerbong = None
+    #         self.kursi = None
+    #         self.kode_pemesanan = None
+    #         self.status = None
             
         # # print all
         # for index, pemesanan in enumerate(self.pemesanan_history, start=1):
@@ -64,21 +64,20 @@ class Pemesanan:
     
     
     
-    def load_all(self,id_input): #for history
+    def load_all(self): #for history
         self.db.connect()
-        self.id_user = id_input
         query = """
-            SELECT p.*, u.nama AS nama, u.nik AS nik, s_awal.nama AS stasiun_awal, s_akhir.nama AS stasiun_akhir, j.waktu AS waktu
+            SELECT p.*, u.nama AS nama, u.nik AS nik, s_awal.nama AS stasiun_awal, s_awal.kode as kode_stasiun_awal, s_akhir.nama AS stasiun_akhir, s_akhir.kode as kode_stasiun_akhir, j.waktu AS waktu
             FROM pemesanan AS p
             JOIN jadwal AS j ON p.id_jadwal = j.id
             JOIN user AS u ON p.id_user = u.id
             JOIN stasiun AS s_awal ON j.stasiun_awal = s_awal.id
             JOIN stasiun AS s_akhir ON j.stasiun_akhir = s_akhir.id
             WHERE p.id_user = ?
+            ORDER BY j.waktu DESC
         """
         self.db.cursor.execute(query, (self.id_user,))
-        rows = self.db.cursor.fetchall()
-        
+        rows = self.db.cursor.fetchmany(10)
         result_all = [dict(row) for row in rows] if rows else None
         self.db.close()
         return result_all
