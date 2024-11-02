@@ -67,7 +67,12 @@ class Pemesanan:
     def load_all(self): #for history
         self.db.connect()
         query = """
-            SELECT p.*, u.nama AS nama, u.nik AS nik, s_awal.nama AS stasiun_awal, s_awal.kode as kode_stasiun_awal, s_akhir.nama AS stasiun_akhir, s_akhir.kode as kode_stasiun_akhir, j.waktu AS waktu
+            SELECT p.*, u.nama AS nama, u.nik AS nik, s_awal.nama AS stasiun_awal, s_awal.kode as kode_stasiun_awal, s_akhir.nama AS stasiun_akhir, s_akhir.kode as kode_stasiun_akhir, j.waktu AS waktu,
+            case when p.gerbong = 'EKS' then j.harga_eks 
+                when p.gerbong = 'BIS' then j.harga_bis 
+                else j.harga_eko 
+            end as harga
+            
             FROM pemesanan AS p
             JOIN jadwal AS j ON p.id_jadwal = j.id
             JOIN user AS u ON p.id_user = u.id
