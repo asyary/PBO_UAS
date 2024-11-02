@@ -87,7 +87,7 @@ class Pemesanan:
         self.db.close()
         return result_all
     
-    def load_all_admin(self):
+    def load_acc_admin(self):
         self.db.connect()
         query = """
             SELECT p.*, u.nama AS nama, u.nik AS nik, s_awal.nama AS stasiun_awal, s_awal.kode as kode_stasiun_awal, s_akhir.nama AS stasiun_akhir, s_akhir.kode as kode_stasiun_akhir, j.waktu AS waktu,
@@ -112,21 +112,21 @@ class Pemesanan:
         
     
     # show one latest jadwal
-    def show_jadwal(self):
-        # Check if pemesanan data is available
-        if not self.pemesanan_data:
-            print("Belum ada pemesanan yang sesuai.")
-            return
-        # Display reservation details
-        print("Reservation Details:")
-        print(f"  Name           : {self.pemesanan_data.get('nama')}")
-        print(f"  NIK            : {self.pemesanan_data.get('nik')}")
-        print(f"  Stasiun Awal   : {self.pemesanan_data.get('stasiun_awal')}")
-        print(f"  Stasiun Akhir  : {self.pemesanan_data.get('stasiun_akhir')}")
-        print(f"  Waktu Keberangkatan : {self.pemesanan_data.get('waktu')}")
-        print(f"  Gerbong        : {self.pemesanan_data.get('gerbong')}")
-        print(f"  Kursi          : {self.pemesanan_data.get('kursi')}")
-        print(f"  Status         : {self.pemesanan_data.get('status')}")
+    # def show_jadwal(self):
+    #     # Check if pemesanan data is available
+    #     if not self.pemesanan_data:
+    #         print("Belum ada pemesanan yang sesuai.")
+    #         return
+    #     # Display reservation details
+    #     print("Reservation Details:")
+    #     print(f"  Name           : {self.pemesanan_data.get('nama')}")
+    #     print(f"  NIK            : {self.pemesanan_data.get('nik')}")
+    #     print(f"  Stasiun Awal   : {self.pemesanan_data.get('stasiun_awal')}")
+    #     print(f"  Stasiun Akhir  : {self.pemesanan_data.get('stasiun_akhir')}")
+    #     print(f"  Waktu Keberangkatan : {self.pemesanan_data.get('waktu')}")
+    #     print(f"  Gerbong        : {self.pemesanan_data.get('gerbong')}")
+    #     print(f"  Kursi          : {self.pemesanan_data.get('kursi')}")
+    #     print(f"  Status         : {self.pemesanan_data.get('status')}")
         
     def new(self):
         self.db.connect()
@@ -153,14 +153,14 @@ class Pemesanan:
         self.db.close()
         # print("Booking deleted successfully.")
 
-    def acc(self):
+    def acc(self,kode_pemesanan):
         self.db.connect()
         query = """
             UPDATE pemesanan
             SET status = 1
             WHERE kode = ?
         """
-        self.db.cursor.execute(query, (self.kode_pemesanan,))
+        self.db.cursor.execute(query, (kode_pemesanan,))
         self.db.connection.commit()
         self.db.close()
         #try except

@@ -146,24 +146,60 @@ class GUI:
 		def acc_tiket():
 			acc_window = tk.Toplevel(admin_window)
 			acc_window.title("Persetujuan Tiket")
-			acc_window.geometry("700x500")
+			acc_window.geometry("500x500")
 			acc_window.resizable(False, False)
 			self.center_window(acc_window)
-			# acc_window.grab_set()
-
+			acc_window.grab_set()
+   
 			tk.Label(acc_window, text="Persetujuan Tiket", font=("Arial", 16)).pack(pady=10)
+   
+			# Create a frame for the canvas and scrollbar
+			frame = tk.Frame(acc_window)
+			frame.pack(fill='both', expand=True)
 
-			# frame = tk.Frame(acc_window)
-			# frame.pack(pady=10)
-			acc_tree = tk.ttk.Treeview(acc_window, columns=('kode', 'status'))	
-			acc_tree.heading('#0', text='Index')
-			acc_tree.heading('kode', text='Kode')
-			acc_tree.heading('waktu', text='Waktu')
-			acc_tree.heading('status', text='Status')
-			acc_tree.pack()
-			
-			
-			# bikin semacam tabel?
+			# Add a canvas in that frame
+			canvas = tk.Canvas(frame)
+			canvas.pack(side="left", fill="both", expand=True)
+
+			# Add a scrollbar to the frame
+			scrollbar = tk.Scrollbar(frame, orient="vertical", command=canvas.yview)
+			scrollbar.pack(side="right", fill="y")
+
+			# Configure the canvas
+			canvas.configure(yscrollcommand=scrollbar.set)
+			canvas.bind('<Configure>', lambda e: canvas.configure(scrollregion=canvas.bbox("all")))
+
+			# Create another frame inside the canvas
+			history_frame = tk.Frame(canvas)
+			canvas.create_window((0, 0), window=history_frame, anchor="nw")
+
+			data_acc = Utils.load_acc_pesanan()
+			def approve_booking(kode):
+				Utils.acc_pesanan(kode)
+				acc_window.destroy()
+				acc_tiket()
+				
+
+			def load_data():
+				if data_acc:
+					for booking in data_acc:
+						booking_frame = tk.Frame(history_frame, bd=1, relief="solid")
+						booking_frame.pack(fill="x", padx=10, pady=5, anchor="nw")
+						booking_info = (
+							f"Kode Tiket\t: {booking.get('kode')}\n"
+							f"Nama\t\t: {booking.get('nama')}\n"
+							f"NIK\t\t: {booking.get('nik')}\n"
+							f"Tujuan\t\t: {(booking.get('stasiun_awal').upper())} ({booking.get('kode_stasiun_awal')})  >>  {booking.get('stasiun_akhir').upper()} ({booking.get('kode_stasiun_akhir')})\n"
+							f"Kursi\t\t: {booking.get('gerbong')} ({booking.get('kursi')})\n"
+							f"Tarif\t\t: Rp. {booking.get('harga')}\n"
+							f"Berangkat\t: {booking.get('waktu')}\n"
+						)
+						tk.Label(booking_frame, text=booking_info, font=("Arial", 10), justify="left").pack(anchor="w", padx=5, pady=5)
+						tk.Button(booking_frame, text="Approve", command=lambda kode=booking.get('kode'): approve_booking(kode)).pack(side="right", padx=10)
+				else:
+					tk.Label(history_frame, text=f"No booking of user {user.nama} history found.", font=("Arial", 12)).pack(pady=20)
+
+			load_data()
 
 
 		def jadwal():
@@ -240,7 +276,7 @@ class GUI:
 		def show_history():
 			history_window = tk.Toplevel(user_window)
 			history_window.title("History Pemesanan")
-			history_window.geometry("450x800")
+			history_window.geometry("450x400")
 			self.center_window(history_window)
 			history_window.resizable(False, False)
 			history_window.grab_set()
@@ -387,42 +423,3 @@ class GUI:
 			tk.Button(waktu_tempuh_window, text="Confirm", command=confirm_waktu_tempuh).pack(pady=10)
 		
 		show_waktu_tempuh_menu()
-
-"""	# Fungsi untuk menangani klik tombol Login
-	def on_login_click():
-		login_window = tk.Toplevel(window)
-		login_window.title("Login")
-		login_window.geometry("300x200")
-
-		tk.Label(login_window, text="Email:").pack(pady=5)
-		email_entry = tk.Entry(login_window)
-		email_entry.pack(pady=5)
-
-		tk.Label(login_window, text="Password:").pack(pady=5)
-		password_entry = tk.Entry(login_window, show="*")
-		password_entry.pack(pady=5)
-
-		def login():
-			email = email_entry.get()
-			password = password_entry.get()
-			user = User(email, password)
-
-			if user.status:
-				if user.role == 'admin':
-					show_admin_menu()
-				else:
-					show_user_menu()
-				login_window.destroy()
-			else:
-				messagebox.showerror("Login", "Login gagal. Email atau password salah.")
-
-		login_button = tk.Button(login_window, text="Login", command=login)
-		login_button.pack(pady=10)
-
-		
-		def menu_pilihan(self):
-			pass
-
-		def menu_pilih_kursi(self):
-			pass
-	"""

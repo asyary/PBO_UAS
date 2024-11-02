@@ -53,3 +53,16 @@ class Utils:
 		pesanan_data = pesanan.load_all()
 		print(f"Type of pesanan_data: {type(pesanan_data)}")
 		return pesanan_data
+
+	def load_acc_pesanan():
+		print("Loading acc pesanan")
+		pesanan = Pemesanan(None, None, None, None)
+		return pesanan.load_acc_admin()
+
+	def acc_pesanan(kode):
+		print(f"Accepting pesanan {kode}")
+		pesanan = Pemesanan(None, None, None, None)
+		pesanan.acc(kode)
+		return pesanan
+
+  
