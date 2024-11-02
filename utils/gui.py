@@ -137,7 +137,7 @@ class GUI:
 	def show_admin_menu(self, user):
 		admin_window = tk.Tk()
 		admin_window.title("Admin Menu")
-		admin_window.geometry("400x300")
+		admin_window.geometry("600x500")
 		self.center_window(admin_window)
 		admin_window.resizable(False, False)
 
@@ -146,8 +146,23 @@ class GUI:
 		def acc_tiket():
 			acc_window = tk.Toplevel(admin_window)
 			acc_window.title("Persetujuan Tiket")
-			acc_window.geometry("500x800")
-			acc_tree = tk.treeview(acc_window)
+			acc_window.geometry("700x500")
+			acc_window.resizable(False, False)
+			self.center_window(acc_window)
+			# acc_window.grab_set()
+
+			tk.Label(acc_window, text="Persetujuan Tiket", font=("Arial", 16)).pack(pady=10)
+
+			# frame = tk.Frame(acc_window)
+			# frame.pack(pady=10)
+			acc_tree = tk.ttk.Treeview(acc_window, columns=('kode', 'status'))	
+			acc_tree.heading('#0', text='Index')
+			acc_tree.heading('kode', text='Kode')
+			acc_tree.heading('waktu', text='Waktu')
+			acc_tree.heading('status', text='Status')
+			acc_tree.pack()
+			
+			
 			# bikin semacam tabel?
 
 
@@ -225,7 +240,10 @@ class GUI:
 		def show_history():
 			history_window = tk.Toplevel(user_window)
 			history_window.title("History Pemesanan")
-			history_window.geometry("500x400")
+			history_window.geometry("450x800")
+			self.center_window(history_window)
+			history_window.resizable(False, False)
+			history_window.grab_set()
 
 			tk.Label(history_window, text="History Pemesanan", font=("Arial", 16)).pack()
 
