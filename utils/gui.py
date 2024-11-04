@@ -239,6 +239,7 @@ class GUI:
 		awal_frame.pack(side=tk.LEFT, padx=5)
 		tk.Label(awal_frame, text="Stasiun Awal").pack()
 		stasiun_nama = [f"{s['kode']} - {s['nama']}" for s in stasiun]
+		stasiun_id = [s['id'] for s in stasiun]
 		stasiun_awal_var = tk.StringVar(awal_frame)
 		input1 = tk.OptionMenu(awal_frame, stasiun_awal_var, *stasiun_nama)
 		stasiun_awal_var.set(stasiun_nama[0])  # Set default value
@@ -262,14 +263,19 @@ class GUI:
 
 		def confirm():
 			# Lakukan sesuatu dengan data input
-			selected_stasiun_awal = stasiun_awal_var.get()
-			selected_stasiun_akhir = stasiun_akhir_var.get()
+			stasiun_awal_id = stasiun_id[stasiun_nama.index(stasiun_awal_var.get())]
+			stasiun_akhir_id = stasiun_id[stasiun_nama.index(stasiun_akhir_var.get())]
 			selected_date = calendar.get_date()
 			selected_date = datetime.strptime(selected_date, "%m/%d/%y").strftime("%Y-%m-%d")
-			if selected_stasiun_awal == selected_stasiun_akhir:
+			if stasiun_awal_id == stasiun_akhir_id:
 				messagebox.showerror("Error", "Stasiun awal dan stasiun akhir tidak boleh sama.")
 				return
-			messagebox.showinfo("Confirm", f"Input 1: {selected_stasiun_awal}, Input 2: {selected_stasiun_akhir}, Tanggal: {selected_date}")
+			jadwal = Utils.get_jadwal(stasiun_awal_id, stasiun_akhir_id, selected_date)
+			if jadwal.jadwal_data:
+				user_window.destroy()
+				self.pilih_kursi(user, jadwal.jadwal_data)
+			else:
+				messagebox.showinfo("Info", "Tidak ada jadwal tersedia untuk rute dan tanggal yang dipilih.")
 
 		tk.Button(user_window, text="Confirm", command=confirm).pack(pady=15)
 
