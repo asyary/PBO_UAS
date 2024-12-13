@@ -102,4 +102,5 @@ sejatim? atau ambil aja beberapa kota jatim sama beberapa stasiunnya
 - Pastikan setiap langkah memiliki validasi data, seperti validasi stasiun, jadwal, kelas, dan pembayaran.
 - Pertimbangkan juga sistem penyimpanan database untuk setiap entitas (stasiun, kereta, kursi, tiket) untuk mempermudah manajemen data.
 
-? database pake apa? file handling? ada sqlite3 sih di python cuma kurang tau cara kerjanya
+#Dokumentasi Progress
+https://drive.google.com/drive/folders/1Qk0QJHWMrCC6OfnPKnMikcgOKPP8eSvB?usp=sharing
