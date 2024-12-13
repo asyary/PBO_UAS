@@ -1,7 +1,13 @@
-![](https://raw.githubusercontent.com/asyary/github-stats/master/generated/overview.svg#gh-dark-mode-only)
-![](https://raw.githubusercontent.com/asyary/github-stats/master/generated/languages.svg#gh-dark-mode-only)
+# UAS PBO Kelompok 2
 
-# I have (no) idea what to do =
+## Anggota Kelompok
+
+- [x] **23051204161** Leonaldo Kurniawan
+- [x] **23051204176** Almaira Fatasya Habiba
+- [x] **23051204179** Muhammad Rafi Rafsanjani
+- [x] **23051204180** Asyary Raihan Haryono
+
+# Brainstorm:
 
 ## Register
 * username 
