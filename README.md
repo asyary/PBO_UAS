@@ -7,9 +7,7 @@
 - [x] **23051204179** Muhammad Rafi Rafsanjani
 - [x] **23051204180** Asyary Raihan Haryono
 
-# Dokumentasi Progress
-
-https://drive.google.com/drive/folders/1Qk0QJHWMrCC6OfnPKnMikcgOKPP8eSvB?usp=sharing
+# [Dokumentasi Progress (Google Drive)](https://drive.google.com/drive/folders/1Qk0QJHWMrCC6OfnPKnMikcgOKPP8eSvB)
 
 # Brainstorm:
 
