@@ -145,7 +145,7 @@ class GUI:
 		def acc_tiket():
 			acc_window = tk.Toplevel(admin_window)
 			acc_window.title("Persetujuan Tiket")
-			acc_window.geometry("500x500")
+			acc_window.geometry("415x400")
 			acc_window.resizable(False, False)
 			self.center_window(acc_window)
 			acc_window.grab_set()
