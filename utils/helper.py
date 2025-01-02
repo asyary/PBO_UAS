@@ -40,12 +40,20 @@ class Utils:
 		print("Getting jadwal")
 		return Jadwal(stasiun_awal, stasiun_akhir, tanggal)
 
-	def add_jadwal(waktu, stasiun_awal, stasiun_akhir, harga_eko=50000, harga_bis=70000, harga_eks=100000):
+	def add_jadwal(stasiun_awal, stasiun_akhir, waktu):
 		print("Adding jadwal")
-		jadwal = Jadwal(waktu, stasiun_awal, stasiun_akhir)
-		return jadwal.new(waktu, stasiun_awal, stasiun_akhir, harga_eko, harga_bis, harga_eks)
+		jadwal = Jadwal(stasiun_awal, stasiun_akhir, waktu)
+		return jadwal.new(stasiun_awal, stasiun_akhir, waktu)
 
+	def check_jadwal_duplicate(stasiun_awal, stasiun_akhir, waktu):
+		jadwal= Jadwal(stasiun_awal, stasiun_akhir, waktu)
+		return jadwal.check_duplicate(stasiun_awal, stasiun_akhir, waktu)
 
+	def get_list_jadwal(stasiun_awal=None, stasiun_akhir=None, tanggal=None):
+		print("Getting list jadwal")
+		jadwal = Jadwal(stasiun_awal, stasiun_akhir, tanggal)
+		return jadwal.get_list_jadwal()
+ 
 	def add_pesanan(id_user, id_jadwal, gerbong, kursi):
 		print("Adding pesanan")
 		pesanan = Pemesanan(id_user, id_jadwal, gerbong, kursi)

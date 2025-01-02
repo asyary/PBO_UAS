@@ -136,7 +136,7 @@ class GUI:
 	def show_admin_menu(self, user):
 		admin_window = tk.Tk()
 		admin_window.title("Admin Menu")
-		admin_window.geometry("300x300")
+		admin_window.geometry("300x400")
 		self.center_window(admin_window)
 		admin_window.resizable(False, False)
 
@@ -202,12 +202,143 @@ class GUI:
 
 
 		def jadwal():
-			messagebox.showinfo("Penjadwalan", "Fitur penjadwalan belum tersedia.")
+			jadwal_window = tk.Toplevel(admin_window)
+			jadwal_window.title("Penjadwalan")
+			jadwal_window.geometry("415x450")
+			self.center_window(jadwal_window)
+			jadwal_window.resizable(False, False)
+			jadwal_window.grab_set()
+			self.lock(jadwal_window)
+   			
+			
+      
+			tk.Label(jadwal_window, text="Penjadwalan", font=("Arial", 16)).pack()
+			
+			stasiun_frame = tk.Frame(jadwal_window)
+			stasiun_frame.pack(pady=5)
+
+			stasiun = Utils.get_stasiun()
+
+			# Stasiun Awal
+			awal_frame = tk.Frame(stasiun_frame)
+			awal_frame.pack(side=tk.LEFT, padx=5)
+			tk.Label(awal_frame, text="Stasiun Awal").pack()
+			stasiun_nama = [f"{s['kode']} - {s['nama']}" for s in stasiun]
+			stasiun_id = [s['id'] for s in stasiun]
+			stasiun_awal_var = tk.StringVar(awal_frame)
+			input1 = tk.OptionMenu(awal_frame, stasiun_awal_var, *stasiun_nama)
+			stasiun_awal_var.set(stasiun_nama[0])  # Set default value
+			input1.pack()
+
+			# Arrow
+			tk.Label(stasiun_frame, text="->").pack(side=tk.LEFT, padx=5, pady=10)
+
+			# Stasiun Akhir
+			akhir_frame = tk.Frame(stasiun_frame)
+			akhir_frame.pack(side=tk.LEFT, padx=5)
+			tk.Label(akhir_frame, text="Stasiun Akhir").pack()
+			stasiun_akhir_var = tk.StringVar(akhir_frame)
+			input2 = tk.OptionMenu(akhir_frame, stasiun_akhir_var, *stasiun_nama)
+			stasiun_akhir_var.set(stasiun_nama[0])  # Set default value
+			input2.pack()
+
+			tk.Label(jadwal_window, text="Tanggal:").pack(pady=5)
+			calendar = Calendar(jadwal_window, selectmode='day', year=datetime.now().year, month=datetime.now().month, day=datetime.now().day)
+			calendar.pack(pady=5)
+
+			tk.Label(jadwal_window, text="Waktu:").pack(pady=5)
+			time_frame = tk.Frame(jadwal_window)
+			time_frame.pack(pady=5)
+			hours = [f"{i:02d}" for i in range(24)]
+			minutes = [f"{i:02d}" for i in range(0, 60, 5)]
+
+			hour_var = tk.StringVar(time_frame)
+			hour_spinbox = tk.Spinbox(time_frame, from_=0, to=23, textvariable=hour_var, width=8, format="%02.0f")
+			hour_spinbox.pack(side=tk.LEFT, padx=5)
+
+			minute_var = tk.StringVar(time_frame)
+			minute_spinbox = tk.Spinbox(time_frame, values=minutes, textvariable=minute_var, width=8)
+			minute_spinbox.pack(side=tk.LEFT, padx=5)
+   
+			second_var = tk.StringVar(time_frame)
+			second_var.set("00")
+   
+			
+			def confirm_schedule():
+				stasiun_awal_id = stasiun_id[stasiun_nama.index(stasiun_awal_var.get())]
+				stasiun_akhir_id = stasiun_id[stasiun_nama.index(stasiun_akhir_var.get())]
+				selected_date = calendar.get_date()
+				selected_date = datetime.strptime(selected_date, "%m/%d/%y").strftime("%Y-%m-%d")
+				selected_datetime = f"{selected_date} {hour_var.get()}:{minute_var.get()}:{second_var.get()}"
+				if stasiun_awal_id == stasiun_akhir_id:
+					messagebox.showerror("Error", "Stasiun awal dan stasiun akhir tidak boleh sama.")
+					return
+				# Add logic to handle the selected date and stations for scheduling
+				
+				if Utils.check_jadwal_duplicate(stasiun_awal_id, stasiun_akhir_id, selected_datetime):
+					messagebox.showerror("Error", "Jadwal sudah ada.")
+					return
+				else:
+					messagebox.showinfo("Jadwal Terpilih", f"Stasiun Awal: {stasiun_awal_var.get()}\nStasiun Akhir: {stasiun_akhir_var.get()}\nTanggal: {selected_datetime}")
+					Utils.add_jadwal(stasiun_awal_id, stasiun_akhir_id, selected_datetime)
+			
+			tk.Button(jadwal_window, text="Confirm", command=confirm_schedule).pack(pady=10)
+		
+		def show_all_jadwal():
+			jadwal_window = tk.Toplevel(admin_window) 
+			jadwal_window.title("Jadwal Kereta")
+			jadwal_window.geometry("310x500")
+			self.center_window(jadwal_window)
+			jadwal_window.resizable(False, False)
+			jadwal_window.grab_set()
+
+			tk.Label(jadwal_window, text="Jadwal Kereta", font=("Arial", 16)).pack()
+
+			# Create a frame for the canvas and scrollbar
+			frame = tk.Frame(jadwal_window)
+			frame.pack(fill="both", expand=True)
+
+			# Add a canvas in that frame
+			canvas = tk.Canvas(frame)
+			canvas.pack(side="left", fill="both", expand=True)
+
+			# Add a scrollbar to the frame
+			scrollbar = tk.Scrollbar(frame, orient="vertical", command=canvas.yview)
+			scrollbar.pack(side="right", fill="y")
+
+			# Configure the canvas
+			canvas.configure(yscrollcommand=scrollbar.set)
+			canvas.bind('<Configure>', lambda e: canvas.configure(scrollregion=canvas.bbox("all")))
+
+			# Create another frame inside the canvas
+			history_frame = tk.Frame(canvas)
+			canvas.create_window((0, 0), window=history_frame, anchor="nw")
+
+			history_data = Utils.get_list_jadwal()
+			print(f"Jadwal data") 
+			if history_data:
+				for jadwal in history_data:
+					jadwal_frame = tk.Frame(history_frame, bd=1, relief="solid")
+					jadwal_frame.pack(fill="x", padx=10, pady=5)
+					jadwal_info = (
+						f"Stasiun Awal\t: {jadwal.get('s_awal').upper()} ({jadwal.get('kode_s_awal')})\n"
+						f"Stasiun Akhir\t: {jadwal.get('s_akhir').upper()} ({jadwal.get('kode_s_akhir')})\n"
+						f"Harga Ekonomi\t: Rp. {jadwal.get('harga_eko')}\n"
+						f"Harga Bisnis\t: Rp. {jadwal.get('harga_bis')}\n"
+						f"Harga Eksekutif\t: Rp. {jadwal.get('harga_eks')}\n"
+						f"Berangkat\t: {jadwal.get('waktu')}\n"
+					)
+					tk.Label(jadwal_frame, text=jadwal_info, font=("Arial", 10), justify="left").pack(anchor="w", padx=10, pady=5)	
+			else:
+				tk.Label(history_frame, text=f"No Jadwal found.", font=("Arial", 12)).pack(pady=20)
+
+
+   
 
 		def history():
 			history_window = tk.Toplevel(admin_window)
 			history_window.title("History Pemesanan")
-			history_window.geometry("300x450")
+			history_window.geometry("415x450")
 			self.center_window(history_window)
 			history_window.resizable(False, False)
 			history_window.grab_set()
@@ -260,8 +391,9 @@ class GUI:
 		button_frame = tk.Frame(admin_window)
 		button_frame.pack(pady=10, )
 		
-		tk.Button(button_frame, text="Apply Ticket", font=("Arial", 15), command=acc_tiket).pack(side="top", padx=15, pady=10)
-		tk.Button(button_frame, text="Penjadwalan", font=("Arial", 15), command=jadwal).pack(side="top", padx=15, pady=10)
+		tk.Button(button_frame, text="Konfirmasi Tiket", font=("Arial", 15), command=acc_tiket).pack(side="top", padx=15, pady=10)
+		tk.Button(button_frame, text="Tambah jadwal", font=("Arial", 15), command=jadwal).pack(side="top", padx=15, pady=10)
+		tk.Button(button_frame, text="Jadwal", font=("Arial", 15), command=show_all_jadwal).pack(side="top", padx=15, pady=10)
 		tk.Button(button_frame, text="History", font=("Arial", 15), command=history).pack(side="top", padx=15, pady=10)
 
 		tk.Button(admin_window, text="Log Out", command=admin_window.destroy).pack(side="bottom", pady=10)
@@ -305,7 +437,7 @@ class GUI:
 		input2.pack()
 
 		tk.Label(user_window, text="Tanggal:").pack(pady=5)
-		calendar = Calendar(user_window, selectmode='day', year=2024, month=10, day=29)
+		calendar = Calendar(user_window, selectmode='day', year=datetime.now().year, month=datetime.now().month, day=datetime.now().day)
 		calendar.pack(pady=5)
 
 		def confirm():
