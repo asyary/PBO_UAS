@@ -54,18 +54,18 @@ class Jadwal:
         self.db.close()
         return result
     
-    def new(self, waktu, stasiun_awal, stasiun_akhir, harga_eko=50000, harga_bis=70000, harga_eks=100000):
+    def new(self, stasiun_awal, stasiun_akhir, waktu, harga_eko=50000, harga_bis=70000, harga_eks=100000):
         """Inserts a new schedule record into the database."""
         self.db.connect()
         
         query = """
-            INSERT INTO jadwal (waktu, stasiun_awal, stasiun_akhir, harga_eko, harga_bis, harga_eks)
+            INSERT INTO jadwal (stasiun_awal, stasiun_akhir, harga_eko, harga_bis, harga_eks, waktu)
             VALUES (?, ?, ?, ?, ?, ?)
         """
         
         # Execute the query with provided values
         try:
-            self.db.cursor.execute(query, (self.stasiun_awal, self.stasiun_akhir, harga_eko, harga_bis, harga_eks, waktu))
+            self.db.cursor.execute(query, (stasiun_awal, stasiun_akhir, harga_eko, harga_bis, harga_eks, waktu))
             self.db.connection.commit()
             success = True
         except Exception:
@@ -75,19 +75,39 @@ class Jadwal:
             # self.clear()
         return success
     
-    #
-    # def show_jadwal(self):
-    #     if not self.jadwal_data:
-    #         print("No schedules found for the selected stations.")
-    #         return
+    def check_duplicate(self, stasiun_awal, stasiun_akhir, waktu):
+        """Checks for duplicate schedules in the database."""
+        self.db.connect()
         
-    #     # Display each schedule
-    #     for index, jadwal in enumerate(self.jadwal_data, start=1):
-    #         print(f"Schedule {index}:")
-    #         print(f"  ID Jadwal      : {jadwal.get('id')}")
-    #         print(f"  Stasiun Awal   : {jadwal.get('s_awal')}")
-    #         print(f"  Stasiun Akhir  : {jadwal.get('s_akhir')}")
-    #         print(f"  Harga Ekonomi  : {jadwal.get('harga_eko')}")
-    #         print(f"  Harga Bisnis   : {jadwal.get('harga_bis')}")
-    #         print(f"  Harga Eksekutif: {jadwal.get('harga_eks')}")
-    #         print(f"  Waktu          : {jadwal.get('waktu')}\n")
+        query = """
+            SELECT COUNT(*) as count FROM jadwal WHERE stasiun_awal = ? AND stasiun_akhir = ? AND waktu = ?
+        """
+        
+        # Execute the query with provided values
+        self.db.cursor.execute(query, (stasiun_awal, stasiun_akhir, waktu))
+        row = self.db.cursor.fetchone()
+        try:
+            count = row['count']
+            if count > 0:
+                duplicate = True
+            else:
+                duplicate = False
+        finally:
+            self.db.close()
+            return duplicate
+    
+    def get_list_jadwal(self):
+        self.db.connect()
+        query = """
+            SELECT j.*, s_awal.nama AS s_awal, s_awal.kode as kode_s_awal, s_akhir.nama AS s_akhir, s_akhir.kode as kode_s_akhir
+            FROM jadwal AS j
+            JOIN stasiun AS s_awal ON j.stasiun_awal = s_awal.id
+            JOIN stasiun AS s_akhir ON j.stasiun_akhir = s_akhir.id
+            ORDER BY j.waktu DESC
+        """
+        self.db.cursor.execute(query, )
+        rows = self.db.cursor.fetchmany(30)
+        
+        result = [dict(row) for row in rows] if rows else None
+        self.db.close()
+        return result
