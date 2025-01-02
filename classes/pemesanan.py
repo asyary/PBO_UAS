@@ -133,7 +133,7 @@ class Pemesanan:
         self.kode_pemesanan = kode_gen()
         query = """
             INSERT INTO pemesanan (id_user, id_jadwal, kode, gerbong, kursi, status)
-            VALUES (?, ?, ?, ?, ?, 1)
+            VALUES (?, ?, ?, ?, ?, 0)
         """
         self.db.cursor.execute(query, (self.id_user, self.id_jadwal, self.kode_pemesanan, self.gerbong, self.kursi))
         self.db.connection.commit()

@@ -2,31 +2,6 @@ from utils import model as DbModel, input_validators as validator
 import hashlib
 
 class User:
-	"""
-	Kelas User untuk mengelola operasi login dan registrasi pengguna.
-	Atribut:
-		status (bool): Status login pengguna.
-		status_reg (bool): Status registrasi pengguna.
-		db (DbModel): Objek model database.
-		email (str): Email pengguna.
-		password (str): Password pengguna yang telah di-hash.
-		nik (str, optional): Nomor Induk Kependudukan pengguna.
-		nama (str, optional): Nama pengguna.
-		id (int, optional): ID pengguna.
-		role (str, optional): Peran pengguna.
-	Metode:
-		__init__(email, password, nik=None, nama=None):
-			Inisialisasi objek User dengan email, password, dan opsi nik serta nama.
-		login():
-			Melakukan login pengguna berdasarkan email dan password.
-		register():
-			Melakukan registrasi pengguna baru ke dalam database.
-		logout():
-			Melakukan logout pengguna dan membersihkan data pengguna yang ada di sesi tersebut.
-		clear():
-			Membersihkan semua atribut pengguna.
-	"""
-    
 	def __init__(self, email, password, nik = None, nama = None):
 		self.status = False
 		self.status_reg = False

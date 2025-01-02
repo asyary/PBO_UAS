@@ -40,7 +40,6 @@ class GUI:
 		win.geometry('{}x{}+{}+{}'.format(width, height, x, y))
 		win.deiconify()
 
-	import tkinter as tk
 
 	def lock(self, win):
 		# Prevent interaction with the parent window
@@ -197,7 +196,7 @@ class GUI:
 						tk.Label(booking_frame, text=booking_info, font=("Arial", 10), justify="left").pack(anchor="w", padx=5, pady=5)
 						tk.Button(booking_frame, text="Approve", command=lambda kode=booking.get('kode'): approve_booking(kode)).pack(side="right", padx=10)
 				else:
-					tk.Label(history_frame, text=f"No booking of user {user.nama} history found.", font=("Arial", 12)).pack(pady=20)
+					tk.Label(history_frame, text=f"No booking found.", font=("Arial", 12)).pack(pady=20)
 
 			load_data()
 
