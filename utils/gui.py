@@ -136,7 +136,7 @@ class GUI:
 	def show_admin_menu(self, user):
 		admin_window = tk.Tk()
 		admin_window.title("Admin Menu")
-		admin_window.geometry("600x500")
+		admin_window.geometry("300x400")
 		self.center_window(admin_window)
 		admin_window.resizable(False, False)
 
@@ -207,7 +207,7 @@ class GUI:
 		def history():
 			history_window = tk.Toplevel(admin_window)
 			history_window.title("History Pemesanan")
-			history_window.geometry("450x400")
+			history_window.geometry("300x450")
 			self.center_window(history_window)
 			history_window.resizable(False, False)
 			history_window.grab_set()
@@ -258,11 +258,11 @@ class GUI:
 			
 
 		button_frame = tk.Frame(admin_window)
-		button_frame.pack(pady=10)
+		button_frame.pack(pady=10, )
 		
-		tk.Button(button_frame, text="Apply Ticket", command=acc_tiket).pack(side="left", padx=5)
-		tk.Button(button_frame, text="Penjadwalan", command=jadwal).pack(side="left", padx=5)
-		tk.Button(button_frame, text="History", command=history).pack(side="left", padx=5)
+		tk.Button(button_frame, text="Apply Ticket", font=("Arial", 15), command=acc_tiket).pack(side="top", padx=15, pady=10)
+		tk.Button(button_frame, text="Penjadwalan", font=("Arial", 15), command=jadwal).pack(side="top", padx=15, pady=10)
+		tk.Button(button_frame, text="History", font=("Arial", 15), command=history).pack(side="top", padx=15, pady=10)
 
 		tk.Button(admin_window, text="Log Out", command=admin_window.destroy).pack(side="bottom", pady=10)
 
