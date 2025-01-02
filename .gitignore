@@ -3,6 +3,7 @@
 
 #test files
 /test
+/tmp
 
 #chace
 classes/__pycache__
