@@ -136,7 +136,7 @@ class GUI:
 	def show_admin_menu(self, user):
 		admin_window = tk.Tk()
 		admin_window.title("Admin Menu")
-		admin_window.geometry("300x400")
+		admin_window.geometry("300x300")
 		self.center_window(admin_window)
 		admin_window.resizable(False, False)
 
