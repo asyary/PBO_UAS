@@ -54,12 +54,12 @@ class Jadwal:
         self.db.close()
         return result
     
-    def new(self, harga_eko, harga_bis, harga_eks, waktu):
+    def new(self, waktu, stasiun_awal, stasiun_akhir, harga_eko=50000, harga_bis=70000, harga_eks=100000):
         """Inserts a new schedule record into the database."""
         self.db.connect()
         
         query = """
-            INSERT INTO jadwal (stasiun_awal, stasiun_akhir, harga_eko, harga_bis, harga_eks, waktu)
+            INSERT INTO jadwal (waktu, stasiun_awal, stasiun_akhir, harga_eko, harga_bis, harga_eks)
             VALUES (?, ?, ?, ?, ?, ?)
         """
         

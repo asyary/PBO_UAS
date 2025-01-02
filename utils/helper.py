@@ -39,7 +39,13 @@ class Utils:
 	def get_jadwal(stasiun_awal, stasiun_akhir, tanggal):
 		print("Getting jadwal")
 		return Jadwal(stasiun_awal, stasiun_akhir, tanggal)
-	
+
+	def add_jadwal(waktu, stasiun_awal, stasiun_akhir, harga_eko=50000, harga_bis=70000, harga_eks=100000):
+		print("Adding jadwal")
+		jadwal = Jadwal(waktu, stasiun_awal, stasiun_akhir)
+		return jadwal.new(waktu, stasiun_awal, stasiun_akhir, harga_eko, harga_bis, harga_eks)
+
+
 	def add_pesanan(id_user, id_jadwal, gerbong, kursi):
 		print("Adding pesanan")
 		pesanan = Pemesanan(id_user, id_jadwal, gerbong, kursi)
