@@ -60,6 +60,17 @@ class Utils:
 		pesanan = pesanan.new()
 		return pesanan
 	
+	def cek_jadwal(id_user, id_jadwal):
+		print("Checking jadwal")
+		pesanan = Pemesanan(id_user, id_jadwal, None, None)
+		found = pesanan.cari()
+		return found is not None
+	
+	def cari_kursi(id_jadwal, gerbong):
+		print("Mencari kursi ditempati")
+		pesanan = Pemesanan(None, id_jadwal, gerbong, None)
+		return pesanan.get_kursi()
+	
 	def history_pesanan(id_user):
 		print("Getting history pesanan")
 		pesanan = Pemesanan(id_user, None, None, None)

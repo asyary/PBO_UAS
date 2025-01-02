@@ -525,7 +525,7 @@ class GUI:
 					"EKO-1", "EKO-2", "EKO-3", "EKO-4"]
 
 		# Function to display the seat selection window
-		def show_seat_selection(selected_time):
+		def show_seat_selection(selected_time, coach = 0):
 			seat_window = tk.Tk()
 			seat_window.title("Kursi yang Ditempati")
 			seat_window.geometry("350x700")
@@ -534,7 +534,13 @@ class GUI:
 
 			tk.Label(seat_window, text="Pilihan Gerbong:").pack(pady=5)
 			selected_coach = tk.StringVar(seat_window)
-			selected_coach.set(coach_list[0])
+			selected_coach.set(coach_list[coach])
+
+			def on_coach_change(*args):
+				seat_window.destroy()
+				show_seat_selection(selected_time, coach_list.index(selected_coach.get()))
+
+			selected_coach.trace_add("write", on_coach_change)
 
 			coach_menu = tk.OptionMenu(seat_window, selected_coach, *coach_list)
 			coach_menu.pack(pady=10)
@@ -549,6 +555,8 @@ class GUI:
 			rows = 16 
 			columns = ["A", "B", "C", "D"]
 			selected_seat = tk.StringVar()
+			id_jadwal = next(item['id'] for item in jadwal if item['waktu'] == selected_time)
+			kursi = Utils.cari_kursi(id_jadwal, coach_list[coach])
 
 			def select_seat(row, col):
 				selected_seat.set(f"{col}{row}")
@@ -556,10 +564,10 @@ class GUI:
 			for row in range(1, rows + 1):
 				for col in columns:
 					seat_text = f"{col}{row}"
-					# if col == "D" and row == 6:
-					# 	seat_button = tk.Button(seat_frame, text=seat_text, width=4, state=tk.DISABLED)
-					# else:
-					seat_button = tk.Button(seat_frame, text=seat_text, width=4, command=lambda r=row, c=col: select_seat(r, c))
+					if seat_text in kursi:
+						seat_button = tk.Button(seat_frame, text=seat_text, width=4, state=tk.DISABLED)
+					else:
+						seat_button = tk.Button(seat_frame, text=seat_text, width=4, command=lambda r=row, c=col: select_seat(r, c))
 					col_index = columns.index(col)
 					if col == "B":
 						seat_button.grid(row=row-1, column=col_index, padx=(2, 40), pady=2)  # Add extra space after column C
@@ -573,7 +581,6 @@ class GUI:
 				if selected_seat_value:
 					messagebox.showinfo("Konfirmasi", f"Gerbong: {selected_coach_value}, Kursi: {selected_seat_value}, Waktu: {selected_time}")
 					id_user = user.id
-					id_jadwal = next(item['id'] for item in jadwal if item['waktu'] == selected_time)
 					kode = Utils.add_pesanan(id_user, id_jadwal, selected_coach_value, selected_seat_value)
 					messagebox.showinfo("Pemesanan", f"Pemesanan berhasil dengan kode {kode}!")
 					seat_window.destroy()
@@ -602,6 +609,11 @@ class GUI:
 
 			def confirm_waktu_tempuh():
 				chosen_waktu = selected_waktu.get()
+				id_jadwal = next(item['id'] for item in jadwal if item['waktu'] == chosen_waktu)
+				if Utils.cek_jadwal(user.id, id_jadwal):
+					messagebox.showerror("Error", "Anda sudah memesan pada jadwal ini!")
+					waktu_tempuh_window.destroy()
+					return self.show_user_menu(user)
 				waktu_tempuh_window.destroy()  # Close time selection window
 				show_seat_selection(chosen_waktu)  # Open seat selection with chosen time
 
