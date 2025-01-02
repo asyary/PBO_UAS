@@ -46,9 +46,9 @@ class Utils:
 		return jadwal.new(waktu, stasiun_awal, stasiun_akhir, harga_eko, harga_bis, harga_eks)
 
 
-	def add_pesanan(id_user, id_jadwal, gerbong, kursi):
+	def add_pesanan(id_user, id_jadwal, gerbong, kursi, status = 0):
 		print("Adding pesanan")
-		pesanan = Pemesanan(id_user, id_jadwal, gerbong, kursi)
+		pesanan = Pemesanan(id_user, id_jadwal, gerbong, kursi, status)
 		pesanan = pesanan.new()
 		return pesanan
 	

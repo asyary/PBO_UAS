@@ -428,6 +428,7 @@ class GUI:
 
 			def select_seat(row, col):
 				selected_seat.set(f"{col}{row}")
+				payment_method()
 
 			for row in range(1, rows + 1):
 				for col in columns:
@@ -442,25 +443,51 @@ class GUI:
 					else:
 						seat_button.grid(row=row-1, column=col_index, padx=2, pady=2)
 
+			def payment_method():
+				payment_window = tk.Toplevel(seat_window)
+				payment_window.title(coach_list[coach] + " " + selected_seat.get() + " — Metode Pembayaran")
+				payment_window.geometry("300x150")
+				self.center_window(payment_window)
+				payment_window.resizable(False, False)
+				self.lock(payment_window)
+
+				tk.Label(payment_window, text=coach_list[coach] + " " + selected_seat.get() + "\nPilih Metode Pembayaran", font=("Arial", 14)).pack(pady=20)
+
+				button_frame = tk.Frame(payment_window)
+				button_frame.pack(pady=10)
+
+				counter_button = tk.Button(button_frame, text="Counter", width=15, height=2, command=confirm_counter)
+				counter_button.pack(side="left", padx=10)
+
+				instant_button = tk.Button(button_frame, text="Instant", width=15, height=2, command=confirm_instant)
+				instant_button.pack(side="right", padx=10)
+
+			def confirm_counter():
+				confirm_selection('counter')
+			
+			def confirm_instant():
+				confirm_selection('instant')
+
 			# Confirm and Cancel buttons
-			def confirm_selection():
+			def confirm_selection(condition):
 				selected_coach_value = selected_coach.get()
 				selected_seat_value = selected_seat.get()
-				if selected_seat_value:
-					messagebox.showinfo("Konfirmasi", f"Gerbong: {selected_coach_value}, Kursi: {selected_seat_value}, Waktu: {selected_time}")
-					id_user = user.id
-					kode = Utils.add_pesanan(id_user, id_jadwal, selected_coach_value, selected_seat_value)
-					messagebox.showinfo("Pemesanan", f"Pemesanan berhasil dengan kode {kode}!")
-					seat_window.destroy()
-					self.show_user_menu(user)
+				messagebox.showinfo("Konfirmasi", f"Gerbong: {selected_coach_value}, Kursi: {selected_seat_value}, Waktu: {selected_time}")
+				id_user = user.id
+				if condition == "counter":
+					kode = Utils.add_pesanan(id_user, id_jadwal, selected_coach_value, selected_seat_value, 0)
+					messagebox.showinfo("Pemesanan", f"Pemesanan berhasil dengan kode {kode}!\nSilakan bayar di konter terdekat.")
 				else:
-					messagebox.showerror("Error", "Pilih kursi terlebih dahulu.")
+					kode = Utils.add_pesanan(id_user, id_jadwal, selected_coach_value, selected_seat_value, 1)
+					messagebox.showinfo("Pemesanan", f"Pemesanan dan pembayaran berhasil dengan kode {kode}!")
+				seat_window.destroy()
+				self.show_user_menu(user)
 
 			def cancel_selection():
 				seat_window.destroy()
 
 			tk.Button(seat_window, text="Cancel", command=cancel_selection).pack(side="left", pady=10, padx=10)
-			tk.Button(seat_window, text="Confirm", command=confirm_selection).pack(side="right", pady=10, padx=10)
+			# tk.Button(seat_window, text="Confirm", command=confirm_selection).pack(side="right", pady=10, padx=10)
 
 		# Sample function to show travel time selection menu
 		def show_waktu_tempuh_menu():

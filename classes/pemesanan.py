@@ -1,12 +1,13 @@
 from utils import model as DbModel
 from utils.kode_generator import generate_random_alphanumeric as kode_gen
 class Pemesanan:
-	def __init__(self, id_user, id_jadwal, gerbong, kursi):
+	def __init__(self, id_user, id_jadwal, gerbong, kursi, status = 0):
 		self.db = DbModel.DbModel()
 		self.gerbong = gerbong
 		self.kursi = kursi
 		self.id_user = id_user
 		self.id_jadwal = id_jadwal
+		self.status = status
 	   
 		self.pemesanan_data = self.valid()
 	   
@@ -15,7 +16,7 @@ class Pemesanan:
 			self.status = self.pemesanan_data.get('status') 
 		else:
 			self.kode_pemesanan = None
-			self.status = None
+			self.status = status
 	   
 	def valid(self): #for ticket info
 		self.db.connect()
@@ -178,9 +179,9 @@ class Pemesanan:
 		self.kode_pemesanan = kode_gen()
 		query = """
 			INSERT INTO pemesanan (id_user, id_jadwal, kode, gerbong, kursi, status)
-			VALUES (?, ?, ?, ?, ?, 0)
+			VALUES (?, ?, ?, ?, ?, ?)
 		"""
-		self.db.cursor.execute(query, (self.id_user, self.id_jadwal, self.kode_pemesanan, self.gerbong, self.kursi))
+		self.db.cursor.execute(query, (self.id_user, self.id_jadwal, self.kode_pemesanan, self.gerbong, self.kursi, self.status))
 		self.db.connection.commit()
 		self.db.close()
 		return self.kode_pemesanan
