@@ -58,6 +58,11 @@ class Utils:
 		found = pesanan.cari()
 		return found is not None
 	
+	def cari_kursi(id_jadwal, gerbong):
+		print("Mencari kursi ditempati")
+		pesanan = Pemesanan(None, id_jadwal, gerbong, None)
+		return pesanan.get_kursi()
+	
 	def history_pesanan(id_user):
 		print("Getting history pesanan")
 		pesanan = Pemesanan(id_user, None, None, None)

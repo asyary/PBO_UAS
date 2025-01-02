@@ -47,6 +47,19 @@ class Pemesanan:
 		self.db.close()
 		return result
 	
+	def get_kursi(self):
+		self.db.connect()
+		query = """
+			SELECT kursi
+			FROM pemesanan
+			WHERE id_jadwal = ? AND gerbong = ?
+		"""
+		self.db.cursor.execute(query, (self.id_jadwal, self.gerbong))
+		rows = self.db.cursor.fetchall()
+		result = [row['kursi'] for row in rows] if rows else []
+		self.db.close()
+		return result
+	
 	# def history(self, id_user):
 	#	 self.pemesanan_history = self.load_all()
 	#	 #took all things idk
@@ -74,8 +87,6 @@ class Pemesanan:
 		#	 print(f"  Gerbong		: {pemesanan.get('gerbong')}")
 		#	 print(f"  Kursi		  : {pemesanan.get('kursi')}")
 		#	 print(f"  Status		 : {pemesanan.get('status')}")
-	
-	
 	
 	def load_all(self): #for history
 		self.db.connect()
