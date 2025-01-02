@@ -470,6 +470,11 @@ class GUI:
 
 			def confirm_waktu_tempuh():
 				chosen_waktu = selected_waktu.get()
+				id_jadwal = next(item['id'] for item in jadwal if item['waktu'] == chosen_waktu)
+				if Utils.cek_jadwal(user.id, id_jadwal):
+					messagebox.showerror("Error", "Anda sudah memesan pada jadwal ini!")
+					waktu_tempuh_window.destroy()
+					return self.show_user_menu(user)
 				waktu_tempuh_window.destroy()  # Close time selection window
 				show_seat_selection(chosen_waktu)  # Open seat selection with chosen time
 
