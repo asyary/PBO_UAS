@@ -1,7 +1,15 @@
-![](https://raw.githubusercontent.com/asyary/github-stats/master/generated/overview.svg#gh-dark-mode-only)
-![](https://raw.githubusercontent.com/asyary/github-stats/master/generated/languages.svg#gh-dark-mode-only)
+# UAS PBO Kelompok 2
 
-# I have (no) idea what to do =
+## Anggota Kelompok
+
+- [x] **23051204161** Leonaldo Kurniawan
+- [x] **23051204176** Almaira Fatasya Habiba
+- [x] **23051204179** Muhammad Rafi Rafsanjani
+- [x] **23051204180** Asyary Raihan Haryono
+
+# [Dokumentasi Progress (Google Drive)](https://drive.google.com/drive/folders/1Qk0QJHWMrCC6OfnPKnMikcgOKPP8eSvB)
+
+# Brainstorm:
 
 ## Register
 * username 
@@ -95,5 +103,3 @@ sejatim? atau ambil aja beberapa kota jatim sama beberapa stasiunnya
 - Kursi yang telah dibooking harus disimpan di database sehingga tidak dapat dibooking oleh user lain.
 - Pastikan setiap langkah memiliki validasi data, seperti validasi stasiun, jadwal, kelas, dan pembayaran.
 - Pertimbangkan juga sistem penyimpanan database untuk setiap entitas (stasiun, kereta, kursi, tiket) untuk mempermudah manajemen data.
-
-? database pake apa? file handling? ada sqlite3 sih di python cuma kurang tau cara kerjanya
