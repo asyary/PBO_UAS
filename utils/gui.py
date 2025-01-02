@@ -205,7 +205,55 @@ class GUI:
 			messagebox.showinfo("Penjadwalan", "Fitur penjadwalan belum tersedia.")
 
 		def history():
-			messagebox.showinfo("History", "Fitur history belum tersedia.")
+			history_window = tk.Toplevel(admin_window)
+			history_window.title("History Pemesanan")
+			history_window.geometry("450x400")
+			self.center_window(history_window)
+			history_window.resizable(False, False)
+			history_window.grab_set()
+
+			tk.Label(history_window, text="History Pemesanan", font=("Arial", 16)).pack()
+
+			# Create a frame for the canvas and scrollbar
+			frame = tk.Frame(history_window)
+			frame.pack(fill="both", expand=True)
+
+			# Add a canvas in that frame
+			canvas = tk.Canvas(frame)
+			canvas.pack(side="left", fill="both", expand=True)
+
+			# Add a scrollbar to the frame
+			scrollbar = tk.Scrollbar(frame, orient="vertical", command=canvas.yview)
+			scrollbar.pack(side="right", fill="y")
+
+			# Configure the canvas
+			canvas.configure(yscrollcommand=scrollbar.set)
+			canvas.bind('<Configure>', lambda e: canvas.configure(scrollregion=canvas.bbox("all")))
+
+			# Create another frame inside the canvas
+			history_frame = tk.Frame(canvas)
+			canvas.create_window((0, 0), window=history_frame, anchor="nw")
+
+			history_data = Utils.history_admin()
+			print(f"History data") 
+			if history_data:
+				for booking in history_data:
+					booking_frame = tk.Frame(history_frame, bd=1, relief="solid")
+					booking_frame.pack(fill="x", padx=10, pady=5)
+					booking_info = (
+						f"Kode Tiket\t: {booking.get('kode')}\n"
+						f"Nama\t\t: {booking.get('nama')}\n"
+						f"NIK\t\t: {booking.get('nik')}\n"
+						f"Tujuan\t\t: {(booking.get('stasiun_awal').upper())} ({booking.get('kode_stasiun_awal')})  >>  {booking.get('stasiun_akhir').upper()} ({booking.get('kode_stasiun_akhir')})\n"
+						f"Kursi\t\t: {booking.get('gerbong')} ({booking.get('kursi')})\n"
+						f"Tarif\t\t: Rp. {booking.get('harga')}\n"
+						f"Berangkat\t: {booking.get('waktu')}\n"
+						f"Status\t\t: {'Approved' if booking.get('status') == 1 else 'Pending'}"
+					)
+					tk.Label(booking_frame, text=booking_info, font=("Arial", 10), justify="left").pack(anchor="w", padx=10, pady=5)	
+			else:
+				tk.Label(history_frame, text=f"No booking of user {user.nama} history found.", font=("Arial", 12)).pack(pady=20)
+
 			
 			
 

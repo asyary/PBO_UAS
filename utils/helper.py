@@ -53,6 +53,11 @@ class Utils:
 		pesanan_data = pesanan.load_all()
 		print(f"Type of pesanan_data: {type(pesanan_data)}")
 		return pesanan_data
+	def history_admin():
+		print("Getting history pesanan")
+		pesanan = Pemesanan(None, None, None, None)
+		pesanan_data = pesanan.load_history_admin()
+		return pesanan_data
 
 	def load_acc_pesanan():
 		print("Loading acc pesanan")
