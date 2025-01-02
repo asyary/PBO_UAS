@@ -164,6 +164,12 @@ class GUI:
 			scrollbar = tk.Scrollbar(frame, orient="vertical", command=canvas.yview)
 			scrollbar.pack(side="right", fill="y")
 
+			# Enable mouse wheel scrolling
+			def on_mouse_wheel(event):
+				canvas.yview_scroll(int(-1*(event.delta/120)), "units")
+
+			canvas.bind_all("<MouseWheel>", on_mouse_wheel)
+	
 			# Configure the canvas
 			canvas.configure(yscrollcommand=scrollbar.set)
 			canvas.bind('<Configure>', lambda e: canvas.configure(scrollregion=canvas.bbox("all")))
@@ -306,6 +312,12 @@ class GUI:
 			scrollbar = tk.Scrollbar(frame, orient="vertical", command=canvas.yview)
 			scrollbar.pack(side="right", fill="y")
 
+			# Enable mouse wheel scrolling
+			def on_mouse_wheel(event):
+				canvas.yview_scroll(int(-1*(event.delta/120)), "units")
+
+			canvas.bind_all("<MouseWheel>", on_mouse_wheel)
+
 			# Configure the canvas
 			canvas.configure(yscrollcommand=scrollbar.set)
 			canvas.bind('<Configure>', lambda e: canvas.configure(scrollregion=canvas.bbox("all")))
@@ -357,6 +369,11 @@ class GUI:
 			scrollbar = tk.Scrollbar(frame, orient="vertical", command=canvas.yview)
 			scrollbar.pack(side="right", fill="y")
 
+   			# Enable mouse wheel scrolling
+			def on_mouse_wheel(event):
+				canvas.yview_scroll(int(-1*(event.delta/120)), "units")
+
+			canvas.bind_all("<MouseWheel>", on_mouse_wheel)
 			# Configure the canvas
 			canvas.configure(yscrollcommand=scrollbar.set)
 			canvas.bind('<Configure>', lambda e: canvas.configure(scrollregion=canvas.bbox("all")))
@@ -471,7 +488,7 @@ class GUI:
 			# Create a frame for the canvas and scrollbar
 			frame = tk.Frame(history_window)
 			frame.pack(fill="both", expand=True)
-
+			
 			# Add a canvas in that frame
 			canvas = tk.Canvas(frame)
 			canvas.pack(side="left", fill="both", expand=True)
@@ -479,6 +496,12 @@ class GUI:
 			# Add a scrollbar to the frame
 			scrollbar = tk.Scrollbar(frame, orient="vertical", command=canvas.yview)
 			scrollbar.pack(side="right", fill="y")
+
+			# Enable mouse wheel scrolling
+			def on_mouse_wheel(event):
+				canvas.yview_scroll(int(-1*(event.delta/120)), "units")
+
+			canvas.bind_all("<MouseWheel>", on_mouse_wheel)
 
 			# Configure the canvas
 			canvas.configure(yscrollcommand=scrollbar.set)
